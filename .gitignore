@@ -1,0 +1,10 @@
+struct.py
+teste.py
+teste2.py
+teste3.py
+teste_numpy.py
+teste.json
+struct_teste.py
+dados.pkl
+*.json
+__pycache__
