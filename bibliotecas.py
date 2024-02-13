@@ -1,3 +1,5 @@
+from observador_alocacao_polos import *
+
 from controlabilidade import *
 from controlador_alocacao_polos import *
 from controlador_lqr import *
