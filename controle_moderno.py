@@ -27,8 +27,8 @@ def controle_moderno(resultado):
     # ========== SÍNTESE DO CONTROLADOR ========== %
     # ALOCAÇÃO DE POLOS
     resultado = controlador_alocacao_polos(resultado, A, B2, C, D)
-    # # LINEAR QUADRÁTICO
-    # resultado = controlador_lqr(resultado, sys_malha_aberta, A, B2, C, D)
+    # LINEAR QUADRÁTICO
+    resultado = controlador_lqr(resultado, sys_malha_aberta, A, B2, C, D)
 
     # # ========== SÍNTESE DO OBSERVADOR ========== %
     # # ALOCAÇÃO DE POLOS
