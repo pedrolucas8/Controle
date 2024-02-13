@@ -30,9 +30,9 @@ def controle_moderno(resultado):
     # LINEAR QUADRÁTICO
     resultado = controlador_lqr(resultado, sys_malha_aberta, A, B2, C, D)
 
-    # # ========== SÍNTESE DO OBSERVADOR ========== %
-    # # ALOCAÇÃO DE POLOS
-    # resultado = observador_alocacao_polos(resultado, A, C)
+    # ========== SÍNTESE DO OBSERVADOR ========== %
+    # ALOCAÇÃO DE POLOS
+    resultado = observador_alocacao_polos(resultado, A, C)
 
     # # LINEAR QUADRÁTICO
     # resultado = observador_lqr(resultado, A, C)
