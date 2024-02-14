@@ -33,7 +33,6 @@ B2 = np.array([[-0.6862, 0.0813], [-7.4350, 0], [-183.7447, 0.3455], [0, 0]])
 # Matriz de observacao y = [u, w]'
 C = np.array([[1, 0, 0, 0], [0, 1, 0, 0]])
 (linhas_C, _) = np.shape(C)
-
 # Matriz de alimentação direta
 D = np.zeros((linhas_C, colunas_B2))
 
@@ -66,8 +65,6 @@ resultado["sys_malha_aberta"] = sys
 
 
 resultado = controle_moderno.controle_moderno(resultado)
-
-print(resultado["Controlador"]["LQR"]["P"]["R"])
 # graficos(resultado)
 
 # salvando o struct
