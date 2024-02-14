@@ -1,7 +1,6 @@
-import control.matlab as cmat
-import numpy as np
-
-from uteis import *
+# importando as bibliotecas necessárias
+from bibliotecas import *
+from struct_dict import *
 
 
 def controlabilidade(resultado, A, B):
@@ -28,9 +27,9 @@ def controlabilidade(resultado, A, B):
         )
         controlavel = False
 
-    resultado = add_subTopico(resultado, "Controlabilidade", "CO", CO)
-    resultado = add_subTopico(resultado, "Controlabilidade", "controlavel", controlavel)
-    resultado = add_subTopico(resultado, "Controlabilidade", "posto", posto_CO)
+    resultado = Struct(resultado, "Controlabilidade", "CO", CO)
+    resultado = Struct(resultado, "Controlabilidade", "controlavel", controlavel)
+    resultado = Struct(resultado, "Controlabilidade", "posto", posto_CO)
     return resultado
 
 

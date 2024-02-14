@@ -6,10 +6,11 @@
 import json
 
 # importando os modulos gerados
-import controle_moderno
+import ControleModerno.controle_moderno as controle_moderno
 
 # importando as bibliotecas necessárias
 from bibliotecas import *
+from struct_dict import *
 
 # Definicao do sistema #
 
@@ -65,6 +66,7 @@ resultado["sys_malha_aberta"] = sys
 
 
 resultado = controle_moderno.controle_moderno(resultado)
+print(resultado["Observador"]["Alocacao"])
 # graficos(resultado)
 
 # salvando o struct

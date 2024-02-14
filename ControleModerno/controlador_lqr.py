@@ -1,8 +1,6 @@
-import control as ct
-import numpy as np
-import scipy
-
-from uteis import *
+# importando as bibliotecas necessárias
+from bibliotecas import *
+from struct_dict import *
 
 
 def controlador_lqr(resultado, sys_malha_aberta, A, B, C, D):
@@ -39,17 +37,11 @@ def controlador_lqr(resultado, sys_malha_aberta, A, B, C, D):
 
     F_LQ = A - B * K_LQ
     sys_mf_LQ = ct.ss(F_LQ, B, C, D)
-    resultado = add_subTopico(resultado, "Controlador", ["LQR", "P", "Polos"], P_LQ)
-    resultado = add_subTopico(resultado, "Controlador", ["LQR", "P", "Ganhos"], K_LQ)
-    resultado = add_subTopico(resultado, "Controlador", ["LQR", "P", "F"], F_LQ)
-    resultado = add_subTopico(
-        resultado, "Controlador", ["LQR", "P", "Q"], Q_LQ_controlador
-    )
-    resultado = add_subTopico(
-        resultado, "Controlador", ["LQR", "P", "R"], R_LQ_controlador
-    )
-    resultado = add_subTopico(
-        resultado, "Controlador", ["LQR", "P", "sys_mf"], sys_mf_LQ
-    )
+    resultado = Struct(resultado, "Controlador", ["LQR", "P", "Polos"], P_LQ)
+    resultado = Struct(resultado, "Controlador", ["LQR", "P", "Ganhos"], K_LQ)
+    resultado = Struct(resultado, "Controlador", ["LQR", "P", "F"], F_LQ)
+    resultado = Struct(resultado, "Controlador", ["LQR", "P", "Q"], Q_LQ_controlador)
+    resultado = Struct(resultado, "Controlador", ["LQR", "P", "R"], R_LQ_controlador)
+    resultado = Struct(resultado, "Controlador", ["LQR", "P", "sys_mf"], sys_mf_LQ)
 
     return resultado

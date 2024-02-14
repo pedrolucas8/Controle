@@ -1,7 +1,6 @@
-import control.matlab as cmat
-import numpy as np
-
-from uteis import *
+# importando as bibliotecas necessárias
+from bibliotecas import *
+from struct_dict import *
 
 
 def estabilidade(resultado, A):
@@ -15,8 +14,8 @@ def estabilidade(resultado, A):
         print("O sistema é estável: nenhum autovalor de A é maior que 0.")
         estavel = True
 
-    resultado = add_subTopico(resultado, "Malha_Aberta", "polos", polos)
-    resultado = add_subTopico(resultado, "Malha_Aberta", "estavel", estavel)
+    resultado = Struct(resultado, "Malha_Aberta", "polos", polos)
+    resultado = Struct(resultado, "Malha_Aberta", "estavel", estavel)
 
     return resultado
 

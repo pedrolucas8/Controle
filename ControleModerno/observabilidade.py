@@ -1,7 +1,6 @@
-import control.matlab as cmat
-import numpy as np
-
-from uteis import *
+# importando as bibliotecas necessárias
+from bibliotecas import *
+from struct_dict import *
 
 
 def observabilidade(resultado, A, C):
@@ -28,9 +27,9 @@ def observabilidade(resultado, A, C):
         )
         observavel = False
 
-    resultado = add_subTopico(resultado, "Observabilidade", "OB", OB)
-    resultado = add_subTopico(resultado, "Observabilidade", "observavel", observavel)
-    resultado = add_subTopico(resultado, "Observabilidade", "posto", posto_OB)
+    resultado = Struct(resultado, "Observabilidade", "OB", OB)
+    resultado = Struct(resultado, "Observabilidade", "observavel", observavel)
+    resultado = Struct(resultado, "Observabilidade", "posto", posto_OB)
     return resultado
 
 

@@ -1,4 +1,4 @@
-def add_subTopico(resultado, topico, subtopicos, valor):
+def Struct(resultado, topico, subtopicos, valor):
     if topico not in resultado:
         resultado[topico] = {}
 
