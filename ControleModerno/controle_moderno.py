@@ -11,8 +11,7 @@ from .controlador_alocacao_polos import *
 from .controlador_lqr import *
 from .observabilidade import *
 from .observador_alocacao_polos import *
-
-# from .observador_lqr import *
+from .observador_lqr import *
 
 
 def controle_moderno(resultado):
@@ -42,7 +41,7 @@ def controle_moderno(resultado):
     # ALOCAÇÃO DE POLOS
     resultado = observador_alocacao_polos(resultado, A, C)
 
-    # # LINEAR QUADRÁTICO
-    # resultado = observador_lqr(resultado, A, C)
+    # LINEAR QUADRÁTICO
+    resultado = observador_lqr(resultado, sys_malha_aberta, A, C)
 
     return resultado
