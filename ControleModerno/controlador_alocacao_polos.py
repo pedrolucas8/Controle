@@ -1,3 +1,13 @@
+import os
+import sys
+
+# Obtém o caminho do diretório raiz do projeto
+dir_raiz = os.path.dirname(os.path.abspath(__file__))
+
+# Adiciona o caminho do diretório "Controle" ao sys.path
+dir_controle = os.path.join(dir_raiz, "..")
+sys.path.append(dir_controle)
+
 # importando as bibliotecas necessárias
 from bibliotecas import *
 from struct_dict import *
