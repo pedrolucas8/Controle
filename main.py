@@ -66,7 +66,7 @@ resultado["sys_malha_aberta"] = sys
 
 
 resultado = controle_moderno.controle_moderno(resultado)
-print(resultado["Observador"]["Alocacao"])
+# print(resultado["Observador"]["LQR"])
 # graficos(resultado)
 
 # salvando o struct

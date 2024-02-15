@@ -6,7 +6,6 @@ from struct_dict import *
 def estabilidade(resultado, A):
     # A - matriz da planta do sistema
     polos, _ = np.linalg.eig(A)  # polos = autovalores de A
-    print(polos)
     if any(polos > 0):
         print("O sistema é instável: pelo menos um autovalor de A é maior que 0.")
         estavel = False
