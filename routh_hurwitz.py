@@ -7,6 +7,27 @@ def tabela2latex(tabela):
 
 
 def RH_caso_especial_1(polinomio):
+    """1º caso especial do critério de Routh-Hurwitz
+
+    Vídeo com explicação: https://www.youtube.com/watch?v=eP4Ymo785OI
+
+    Descrição:
+    O primeiro elemento de qualquer linha da tabela de Routh é Zero e a linha restante contém pelo menos um elemento diferente de zero.
+
+    Efeito: o termo na próxima linha torna-se infinito e o teste de Routh falha.
+
+    Resolvendo pelo 2º método: O método do polinômio inverso
+
+    * Substitua 's' por '1/z' na equação característica original
+    * Tire o mínimo múltiplo comum e reorganize os termos em potências decrescentes de 'z'
+    * Complete a tabela de Routh com esse novo polinômio em 'z' e verifique a estabilidade desse polinômio
+
+    Args:
+        polinomio (array): polinômio original
+
+    Returns:
+        polinomio reverso: polinômio reverso
+    """
     novo_polinomio = np.copy(polinomio[::-1])
 
     tabela, soma_mudanca_sinal, estavel = routh_hurwitz(polinomio=novo_polinomio)
@@ -14,6 +35,30 @@ def RH_caso_especial_1(polinomio):
 
 
 def RH_caso_especial_2(polinomio, tabela, linha):
+    """2º caso especial do critério de Routh-Hurwitz
+
+    Vídeo com a explicação: https://www.youtube.com/watch?v=yg1ZJccfoQE
+
+    Descrição:
+    Todos os elementos de uma linha tabela de Routh são zeros.
+
+    Efeito: os termos da próxima linha podem não ser determinados e o teste de Routh falha.
+
+    Resolvendo:
+    * Crie um polinômio usando os coeficientes da linha acima da linha de zeros. Esse polinômio é chamado de Polinômio Auxiliar
+    * Derive esse polinômio auxiliar em 's'
+    * Substitua a linha de zeros pelos coeficientes do resultado da derivada
+
+
+    Args:
+        polinomio (array): primeiro array acima da linha de zeros
+        tabela (matriz): tabela de Routh-Hurwitz até o momento que o código encontra a linha de zeros
+        linha (int): linha na qual a linha de zeros está
+
+    Returns:
+        tabela: retorna a tabela atualizada com a derivada da linha
+    """
+
     # Calcula o grau do polinômio atual
     grau = len(polinomio) - 1
 
