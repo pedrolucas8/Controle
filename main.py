@@ -12,7 +12,7 @@ sist = structtype()
 
 def_sistema(sist)
 
-# controle_moderno(sist)
+controle_moderno(sist)
 
 # print(resultado["Observador"]["LQR"])
 # graficos(resultado)

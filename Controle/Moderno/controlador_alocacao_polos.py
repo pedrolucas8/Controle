@@ -1,19 +1,8 @@
-import os
-import sys
-
-# Obtém o caminho do diretório raiz do projeto
-dir_raiz = os.path.dirname(os.path.abspath(__file__))
-
-# Adiciona o caminho do diretório "Controle" ao sys.path
-dir_controle = os.path.join(dir_raiz, "..")
-sys.path.append(dir_controle)
-
-# importando as bibliotecas necessárias
-from bibliotecas import *
-from struct_dict import *
+from ..bibliotecas import *
+from ..structtype import structtype 
 
 
-def controlador_alocacao_polos(resultado, A, B, C, D):
+def controlador_alocacao_polos(A, B, C, D):
     # Alocação de polos para o controlador
     # Ref: Capitulo 10 do livro Flight Dynamics Principles (Cook)
     # [P1, K1] = alocacao_Cook(A, B);
@@ -47,53 +36,42 @@ def controlador_alocacao_polos(resultado, A, B, C, D):
     F5 = A - np.matmul(B, K5)
     sys_mf5 = ct.ss(F5, B, C, D)
 
+    Alocacao = structtype()
     # # ==========
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P1", "Polos"], P1)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P1", "Ganhos"], K1)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P1", "F"], F1)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P1", "sys_mf"], sys_mf1)
-    # ==========
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P2", "Polos"], P2)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P2", "Ganhos"], K2)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P2", "F"], F2)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P2", "sys_mf"], sys_mf2)
-    # ==========
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P3", "Polos"], P3)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P3", "Ganhos"], K3)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P3", "F"], F3)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P3", "sys_mf"], sys_mf3)
-    # ==========
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P4", "Polos"], P4)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P4", "Ganhos"], K4)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P4", "F"], F4)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P4", "sys_mf"], sys_mf4)
-    # ==========
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P5", "Polos"], P5)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P5", "Ganhos"], K5)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P5", "F"], F5)
-    resultado = Struct(resultado, "Controlador", ["Alocacao", "P5", "sys_mf"], sys_mf5)
-    # ==========
-
-    return resultado
-
-
-if __name__ == "__main__":
-    A = np.array(
-        [
-            [-0.2655, -0.1235, 0.8388, -9.7925],
-            [-1.4412, -3.7332, 15.2192, 0.5863],
-            [-0.3795, -6.3157, -4.7475, 0],
-            [0, 0, 1, 0],
-        ]
+    Alocacao.P1 = structtype(
+        Polos = P1,
+        Ganhos = K1,
+        F = F1,
+        sys_mf = sys_mf1,
     )
-    B2 = np.array([[-0.6862, 0.0813], [-7.4350, 0], [-183.7447, 0.3455], [0, 0]])
-    (_, colunas_B2) = np.shape(B2)
+    # ==========
+    Alocacao.P2 = structtype(
+        Polos = P2,
+        Ganhos = K2,
+        F = F2,
+        sys_mf = sys_mf2,
+    )
+    # ==========
+    Alocacao.P3 = structtype(
+        Polos = P3,
+        Ganhos = K3,
+        F = F3,
+        sys_mf = sys_mf3,
+    )
+    # ==========
+    Alocacao.P4 = structtype(
+        Polos = P4,
+        Ganhos = K4,
+        F = F4,
+        sys_mf = sys_mf4,
+    )
+    # ==========
+    Alocacao.P5 = structtype(
+        Polos = P5,
+        Ganhos = K5,
+        F = F5,
+        sys_mf = sys_mf5,
+    )
+    # ==========
 
-    C = np.array([[1, 0, 0, 0], [0, 1, 0, 0]])
-    (linhas_C, _) = np.shape(C)
-
-    D = np.zeros((linhas_C, colunas_B2))
-
-    resultado = dict()
-    resultado = controlador_alocacao_polos(resultado, A, B2, C, D)
-    print(resultado["Controlador"]["Alocacao"]["P2"]["Ganhos"])
+    return Alocacao

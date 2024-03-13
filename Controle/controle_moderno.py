@@ -24,14 +24,15 @@ def controle_moderno(sist):
     sist.Observabilidade = observabilidade(A, C)
 
     # ========== SÍNTESE DO CONTROLADOR ========== %
+    sist.Controlador = structtype() 
     # ALOCAÇÃO DE POLOS
-    sist = controlador_alocacao_polos(sist, A, B2, C, D)
+    sist.Controlador.Alocacao = controlador_alocacao_polos(A, B2, C, D)
     # LINEAR QUADRÁTICO
-    sist = controlador_lqr(sist, sys_malha_aberta, A, B2, C, D)
+    sist.Controlador.LQR = controlador_lqr(sys_malha_aberta, A, B2, C, D)
 
     # ========== SÍNTESE DO OBSERVADOR ========== %
     # ALOCAÇÃO DE POLOS
-    sist = observador_alocacao_polos(sist, A, C)
+    # sist = observador_alocacao_polos(A, C)
 
     # LINEAR QUADRÁTICO
-    sist = observador_lqr(sist, sys_malha_aberta, A, C)
+    # sist = observador_lqr(sys_malha_aberta, A, C)

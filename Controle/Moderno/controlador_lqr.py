@@ -1,23 +1,11 @@
-import os
-import sys
-
-# Obtém o caminho do diretório raiz do projeto
-dir_raiz = os.path.dirname(os.path.abspath(__file__))
-
-# Adiciona o caminho do diretório "Controle" ao sys.path
-dir_controle = os.path.join(dir_raiz, "..")
-sys.path.append(dir_controle)
-
-# importando as bibliotecas necessárias
-from bibliotecas import *
-from struct_dict import *
+from ..bibliotecas import *
+from ..structtype import structtype 
 
 
-def controlador_lqr(resultado, sys_malha_aberta, A, B, C, D):
+def controlador_lqr(sys_malha_aberta, A, B, C, D):
     """Síntese do controlador linear quadrático
 
     Argumentos:
-        resultado (struct): struct com as informações do projeto
         sys_malha_aberta (sys): sistema de malha aberta
         A (matriz): Matriz de estados
         B2 (matriz): Matriz de entradas de controle
@@ -47,11 +35,14 @@ def controlador_lqr(resultado, sys_malha_aberta, A, B, C, D):
 
     F_LQ = A - B * K_LQ
     sys_mf_LQ = ct.ss(F_LQ, B, C, D)
-    resultado = Struct(resultado, "Controlador", ["LQR", "P", "Polos"], P_LQ)
-    resultado = Struct(resultado, "Controlador", ["LQR", "P", "Ganhos"], K_LQ)
-    resultado = Struct(resultado, "Controlador", ["LQR", "P", "F"], F_LQ)
-    resultado = Struct(resultado, "Controlador", ["LQR", "P", "Q"], Q_LQ_controlador)
-    resultado = Struct(resultado, "Controlador", ["LQR", "P", "R"], R_LQ_controlador)
-    resultado = Struct(resultado, "Controlador", ["LQR", "P", "sys_mf"], sys_mf_LQ)
+    LQR = structtype()
+    LQR.P = structtype(
+        Polos = P_LQ,
+        Ganhos = K_LQ,
+        F = F_LQ,
+        Q = Q_LQ_controlador,
+        R = R_LQ_controlador,
+        sys_mf = sys_mf_LQ
+    )
 
-    return resultado
+    return LQR
