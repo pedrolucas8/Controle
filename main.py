@@ -6,11 +6,11 @@
 import json
 
 # importando os modulos gerados
-import ControleModerno.controle_moderno as controle_moderno
+import Controle.Moderno.controle_moderno as controle_moderno
 
 # importando as bibliotecas necessárias
 from bibliotecas import *
-from struct_dict import *
+from Controle.struct_dict import *
 
 # Definicao do sistema #
 
