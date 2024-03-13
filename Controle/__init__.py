@@ -1,4 +1,5 @@
-from .struct_dict import Struct
+from .structtype import structtype
+# from .struct_dict import Struct
 
 from .graficos import *
 
