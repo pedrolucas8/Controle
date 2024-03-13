@@ -28,18 +28,22 @@ class structtype():
 
     """ Apresenta todos os campos do struct
     """
-    def Show(self,Ntabs=0,prefixo=""):
+    def Show(self, Ntabs=0, prefixo="", printa_valores=False):
         variaveis = vars(self)
         if Ntabs == 0:
             print("CAMPOS DO STRUCT")
         for nome in variaveis:
             var = variaveis[nome]
-            textobase = Ntabs*"  "+f"{prefixo}{nome}"
-            if type(var) is not structtype:
-                print(textobase+f"\t: {var}")
+            print(Ntabs*"  "+f"{prefixo}{nome}",end='')
+            tipo = type(var)
+            if tipo is not structtype:
+                if printa_valores:
+                    print(f"\t: {var}")
+                else:
+                    print(f"\t: {tipo}")
             else:
-                print(textobase+f"   STRUCT")
-                var.Show(Ntabs=Ntabs+1,prefixo=".")
+                print("   STRUCT")
+                var.Show(Ntabs=Ntabs+1,prefixo=".",printa_valores=printa_valores)
 
 
 
@@ -48,10 +52,10 @@ class structtype():
 if __name__ == "__main__":
     AA = structtype(a=10,b=100.328,c=structtype(a=1000))
     AA.cc = "Hello World!!"
-    AA.c.b = -50
+    AA.c.b = [i for i in range(50)]
     AA.d = structtype(x=0)
     AA.c.c = structtype(a = 10)
     AA.Set(z=10)
     AA.SetAttr("j",30)
     
-    AA.Show()
+    AA.Show(printa_valores=True)
