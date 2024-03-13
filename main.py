@@ -1,71 +1,19 @@
-# Trabalho - Grupo 7
-# Júlia Jeszensky de Menezes - 11804790
-# Luã de Souza Santos - 11803927
-# Pedro Lucas - 11894520
-
-import json
-
-# importando os modulos gerados
-import Controle.Moderno.controle_moderno as controle_moderno
+"""Trabalho - Grupo 7
+Júlia Jeszensky de Menezes - 11804790
+Luã de Souza Santos - 11803927
+Pedro Lucas - 11894520
+"""
 
 # importando as bibliotecas necessárias
-from bibliotecas import *
-from Controle.struct_dict import *
+from Controle import *
 
 # Definicao do sistema #
+sist = structtype()
 
-# Matriz de estados. x = [u, w, q, theta]'
-A = np.array(
-    [
-        [-0.2655, -0.1235, 0.8388, -9.7925],
-        [-1.4412, -3.7332, 15.2192, 0.5863],
-        [-0.3795, -6.3157, -4.7475, 0],
-        [0, 0, 1, 0],
-    ]
-)
+def_sistema(sist)
 
-# # Matriz de entrada de disturbios (A fazer!!)
-# B1 = 0;
+# controle_moderno(sist)
 
-# Matriz de entradas de controle
-B2 = np.array([[-0.6862, 0.0813], [-7.4350, 0], [-183.7447, 0.3455], [0, 0]])
-(_, colunas_B2) = np.shape(B2)
-
-# Matriz de observacao y = [u, w]'
-C = np.array([[1, 0, 0, 0], [0, 1, 0, 0]])
-(linhas_C, _) = np.shape(C)
-# Matriz de alimentação direta
-D = np.zeros((linhas_C, colunas_B2))
-
-estados = [
-    "Vel. Horizontal (u)",
-    "Vel. Vertical (w)",
-    "Taxa Arfagem (q)",
-    "Ang. Atitude (theta)",
-]
-entradas = ["Def. Profundor (eta)", "Tração (tau)"]
-saidas = ["Vel. Horizontal (u)", "Vel. Vertical (w)"]
-
-sys = ct.ss(
-    A,
-    B2,
-    C,
-    D,
-    inputs=entradas,
-    outputs=saidas,
-    states=estados,
-)
-
-resultado = dict()
-
-resultado["A"] = A
-resultado["B2"] = B2
-resultado["C"] = C
-resultado["D"] = D
-resultado["sys_malha_aberta"] = sys
-
-
-resultado = controle_moderno.controle_moderno(resultado)
 # print(resultado["Observador"]["LQR"])
 # graficos(resultado)
 

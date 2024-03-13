@@ -1,19 +1,8 @@
-import os
-import sys
-
-# Obtém o caminho do diretório raiz do projeto
-dir_raiz = os.path.dirname(os.path.abspath(__file__))
-
-# Adiciona o caminho do diretório "Controle" ao sys.path
-dir_controle = os.path.join(dir_raiz, "..")
-sys.path.append(dir_controle)
-
-# importando as bibliotecas necessárias
-from bibliotecas import *
-from struct_dict import *
+from ..bibliotecas import *
+from ..structtype import structtype 
 
 
-def observabilidade(resultado, A, C):
+def observabilidade(A, C):
     # A - matriz da planta do sistema
     # C - matriz de saida do sistema
 
@@ -37,23 +26,9 @@ def observabilidade(resultado, A, C):
         )
         observavel = False
 
-    resultado = Struct(resultado, "Observabilidade", "OB", OB)
-    resultado = Struct(resultado, "Observabilidade", "observavel", observavel)
-    resultado = Struct(resultado, "Observabilidade", "posto", posto_OB)
-    return resultado
-
-
-if __name__ == "__main__":
-    A = np.array(
-        [
-            [-0.2655, -0.1235, 0.8388, -9.7925],
-            [-1.4412, -3.7332, 15.2192, 0.5863],
-            [-0.3795, -6.3157, -4.7475, 0],
-            [0, 0, 1, 0],
-        ]
+    Observabilidade = structtype(
+        OB = OB,
+        observavel = observavel,
+        posto = posto_OB
     )
-    C = np.array([[1, 0, 0, 0], [0, 1, 0, 0]])
-
-    resultado = dict()
-    resultado = observabilidade(resultado, A, C)
-    print(resultado["Observabilidade"]["OB"])
+    return Observabilidade
