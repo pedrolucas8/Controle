@@ -15,6 +15,10 @@ def_sistema(sist)
 
 controle_moderno(sist)
 
+fig = Plots.plot_polos(sist.sys_malha_aberta)
+fig.update_layout(xaxis_range=[-5,2])
+fig.show()
+
 # print(resultado["Observador"]["LQR"])
 # graficos(resultado)
 
