@@ -6,6 +6,7 @@ Pedro Lucas - 11894520
 
 # importando as bibliotecas necessárias
 from Controle import *
+from controle_moderno import controle_moderno
 
 # Definicao do sistema #
 sist = structtype()

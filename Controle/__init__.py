@@ -9,5 +9,3 @@ from .define_sistema import def_sistema
 
 # from .Classico import *
 # from .Moderno import *
-
-from .controle_moderno import controle_moderno

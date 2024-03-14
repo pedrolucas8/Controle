@@ -4,7 +4,7 @@ Retorna:
     resultado: struct com todas as informações sobre o sistema
 """
 
-from .Moderno import *
+from Controle.Moderno import *
 
 def controle_moderno(sist):
     # VARIÁVEIS QUE SERÃO USADAS
