@@ -31,8 +31,9 @@ def controle_moderno(sist):
     sist.Controlador.LQR = controlador_lqr(sys_malha_aberta, A, B2, C, D)
 
     # ========== SÍNTESE DO OBSERVADOR ========== %
+    sist.Observador = structtype() 
     # ALOCAÇÃO DE POLOS
-    # sist = observador_alocacao_polos(A, C)
+    sist.Observador.Alocacao = observador_alocacao_polos(A, C)
 
     # LINEAR QUADRÁTICO
-    # sist = observador_lqr(sys_malha_aberta, A, C)
+    sist.Observador.LQR = observador_lqr(sys_malha_aberta, A, C)
