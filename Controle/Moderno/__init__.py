@@ -1,7 +1,9 @@
-from .estabilidade import *
-from .controlabilidade import *
-from .controlador_alocacao_polos import *
-from .controlador_lqr import *
-from .observabilidade import *
-from .observador_alocacao_polos import *
-from .observador_lqr import *
+from .estabilidade import estabilidade
+from .controlabilidade import controlabilidade
+from .observabilidade import observabilidade
+
+from .controlador_alocacao_polos import controlador_alocacao_polos
+from .controlador_lqr import controlador_lqr
+
+from .observador_alocacao_polos import observador_alocacao_polos
+from .observador_lqr import observador_lqr
