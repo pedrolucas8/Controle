@@ -52,6 +52,7 @@ def plot_polos(sys):
             # tickrange = [0,1],
             # gridcolor = "lightgrey"
         ),
+        showlegend=False,
         plot_bgcolor="White",
         paper_bgcolor="White",
         template = "plotly_white",
