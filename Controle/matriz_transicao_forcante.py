@@ -1,5 +1,4 @@
-import numpy as np
-import math
+from .bibliotecas import *
 
 
 def matriz_transicao_forcante(A, dt=0.1, k=5):
@@ -26,8 +25,29 @@ def matriz_transicao_forcante(A, dt=0.1, k=5):
 
     return Phi, Gamma
 
+def simulacao_matriz_transicao_forcante(Phi,GammaB,u, x0=None):
+    # Condições iniciais
+    if x0 is None:
+        x0 = np.zeros((Phi.shape[0], 1))
+    else:
+        if x0.shape != (Phi.shape[0], 1):
+            raise ValueError("x0 deve ter o mesmo número de linhas que Phi.")
+        x[:, 0] = x0.flatten()
+    N = u.shape[1]
 
-def simulacao_degrau_transicao_forcante(Phi, Gamma, B, x0=None, dt=0.1, n=20):
+    # inicializando o vetor x (qtd. linhas de x0, qtd. colunas de t)
+    x = np.zeros((x0.shape[0], N))
+
+    # adicionando as condições iniciais
+    x[:, 0] = x0.flatten()
+
+    # cálculo dos valores de x(t) para cada instante de tempo
+    for i in range(1, N):
+        x[:, i] = Phi @ x[:, i - 1] + GammaB @ u[:,i]
+    
+    return x
+
+def simulacao_degrau_transicao_forcante(Phi, Gamma, B, u0=1, x0=None, dt=0.1, n=20):
     """Simulação de uma entrada degrau utilizando as matrizes de transição e do termo forçante
 
     Observação:
@@ -51,42 +71,8 @@ def simulacao_degrau_transicao_forcante(Phi, Gamma, B, x0=None, dt=0.1, n=20):
     t = np.arange(start=0, stop=dt * (n + 1), step=dt)
 
     # entrada degrau
-    u = 1
-
-    # Condições iniciais
-    if x0 is None:
-        x0 = np.zeros((Phi.shape[0], 1))
-    else:
-        if x0.shape != (Phi.shape[0], 1):
-            raise ValueError("x0 deve ter o mesmo número de linhas que Phi.")
-        x[:, 0] = x0.flatten()
-
-    # inicializando o vetor x (qtd. linhas de x0, qtd. colunas de t)
-    x = np.zeros((np.shape(x0)[0], len(t)))
-
-    # adicionando as condições iniciais
-    x[:, 0] = x0.flatten()
-
-    # cálculo dos valores de x(t) para cada instante de tempo
-    for i in range(1, len(t)):
-        x[:, i] = np.dot(Phi, x[:, i - 1]) + np.dot(Gamma, B).flatten() * u
+    u = u0*np.ones((B.shape[1],t.shape[0]))
+    x = simulacao_matriz_transicao_forcante(Phi, Gamma@B, u, x0=x0)
 
     return x, t
 
-
-if __name__ == "__main__":
-    A = np.matrix([[0, 1], [-100, 0]])
-    B = np.matrix([[0], [10]])
-
-    p, g = matriz_transicao_forcante(A, dt=0.2, k=4)
-
-    x, t = simulacao_degrau_transicao_forcante(p, g, B, dt=0.2)
-
-    import matplotlib.pyplot as plt
-
-    plt.figure()
-    plt.plot(t, x[0, :])
-    plt.show()
-    plt.figure()
-    plt.plot(t, x[1, :], c="red")
-    plt.show()

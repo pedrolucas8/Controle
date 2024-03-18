@@ -1,5 +1,6 @@
 # Matemática
 import numpy as np
+import math
 import scipy
 
 # Controle
