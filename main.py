@@ -18,6 +18,12 @@ controle_moderno(sist)
 fig = Plots.plot_polos(sist.sys_malha_aberta)
 fig.update_layout(xaxis_range=[-5,2])
 fig.show()
+# fig.write_image("fig_polos.png", scale=2)
+
+fig = Plots.plot_step(sist.sys_malha_aberta)
+# fig.update_layout(xaxis_range=[-5,2])
+fig.show()
+# fig.write_image("fig_step.png", scale=2)
 
 # print(resultado["Observador"]["LQR"])
 # graficos(resultado)
