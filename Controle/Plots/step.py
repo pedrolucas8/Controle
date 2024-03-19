@@ -48,8 +48,8 @@ def plot_step(sys, T=15, dt=.01, input=0):
                 # color="black"
             ),
 
-            yanchor="bottom",
-            y=1.01,
+            yanchor="top",
+            y=-.20,
             xanchor="center",
             x=0.5,
 
@@ -60,7 +60,7 @@ def plot_step(sys, T=15, dt=.01, input=0):
         plot_bgcolor="White",
         paper_bgcolor="White",
         template = "plotly_white",
-        width=700, height=450,
+        width=700, height=500,
     )
 
     return fig
