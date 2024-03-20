@@ -12,19 +12,8 @@ def controle_moderno(sist):
     A  = sist.sistema.A
     B2 = sist.sistema.B2
     C  = sist.sistema.C
-    D  = sist.sistema.D
+    D  = sist.sistema.D2
     sys_malha_aberta = sist.sys_malha_aberta
-
-    # ANÁLISE DE ESTABILIDADE
-    sist.Malha_Aberta = estabilidade(A)
-    
-    # ANÁLISE DE CONTROLABILIDADE
-    sist.Controlabilidade = controlabilidade(A, B2)
-
-    # ANÁLISE DE OBSERVABILIDADE
-    sist.Observabilidade = observabilidade(A, C)
-
-
 
     # ========== SÍNTESE DO CONTROLADOR ========== %
     sist.Controlador = structtype() 

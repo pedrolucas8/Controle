@@ -1,5 +1,4 @@
 import numpy as np
-import control as ct
 from .structtype import structtype
 
 def def_sistema(sist):
@@ -11,8 +10,8 @@ def def_sistema(sist):
         [ 0     ,  0     ,  1     , 0     ],
     ])
 
-    # # Matriz de entrada de disturbios (A fazer!!)
-    B1 = np.zeros((
+    # # Matriz de entrada de disturbios
+    B1 = np.array((
         [-0.1235,  0],
         [-3.7332, -1],
         [-6.3157,  0],
@@ -34,7 +33,8 @@ def def_sistema(sist):
     ])
 
     # Matriz de alimentação direta
-    D = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
+    D1 = np.zeros((np.shape(C)[0], np.shape(B1)[1]))
+    D2 = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
 
     # Nome das variáveis
     estados = [
@@ -56,27 +56,16 @@ def def_sistema(sist):
         "Vel. Vertical (w)"
     ]
 
-    # Cria sistema
-    sys = ct.ss(
-        A,
-        B2,
-        C,
-        D,
-        inputs=controle,
-        outputs=saidas,
-        states=estados,
-    )
-
     # Salva o resultado
     sist.sistema = structtype(
         A  = A,
         B1 = B1,
         B2 = B2,
         C  = C,
-        D  = D,
+        D1 = D1,
+        D2 = D2,
         estados = estados,
         controle = controle,
         perturbacoes = perturbacoes,
         saidas = saidas
     )
-    sist.sys_malha_aberta = sys

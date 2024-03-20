@@ -6,12 +6,15 @@ Pedro Lucas - 11894520
 
 # importando as bibliotecas necessárias
 from Controle import *
+from malha_aberta import malha_aberta
 from controle_moderno import controle_moderno
 
 # Definicao do sistema #
 sist = structtype()
 
 def_sistema(sist)
+
+malha_aberta(sist)
 
 controle_moderno(sist)
 
