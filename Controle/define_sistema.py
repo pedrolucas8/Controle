@@ -12,7 +12,12 @@ def def_sistema(sist):
     ])
 
     # # Matriz de entrada de disturbios (A fazer!!)
-    B1 = np.zeros(0)
+    B1 = np.zeros((
+        [-0.1235,  0],
+        [-3.7332, -1],
+        [-6.3157,  0],
+        [ 0     ,  0]
+    ))
 
     # Matriz de entradas de controle
     B2 = np.array([
@@ -38,9 +43,13 @@ def def_sistema(sist):
         "Taxa Arfagem (q)",
         "Ang. Atitude (theta)",
     ]
-    entradas = [
+    controle = [
         "Def. Profundor (eta)", 
         "Tração (tau)"
+    ]
+    perturbacoes = [
+        "Vel. vertical (Ugust)", 
+        "Acel. vertical (U'gust)"
     ]
     saidas = [
         "Vel. Horizontal (u)", 
@@ -53,7 +62,7 @@ def def_sistema(sist):
         B2,
         C,
         D,
-        inputs=entradas,
+        inputs=controle,
         outputs=saidas,
         states=estados,
     )
@@ -64,6 +73,10 @@ def def_sistema(sist):
         B1 = B1,
         B2 = B2,
         C  = C,
-        D  = D
+        D  = D,
+        estados = estados,
+        controle = controle,
+        perturbacoes = perturbacoes,
+        saidas = saidas
     )
     sist.sys_malha_aberta = sys
