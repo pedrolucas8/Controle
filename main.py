@@ -28,6 +28,11 @@ fig = Plots.plot_step(sist.sys_malha_aberta)
 fig.show()
 # fig.write_image("fig_step.png", scale=2)
 
+fig = Plots.plot_initial(sist.Controlador.Alocacao.P1.sys_mf,X0=1)
+# fig.update_layout(xaxis_range=[-5,2])
+fig.show()
+# fig.write_image("fig_step.png", scale=2)
+
 # print(resultado["Observador"]["LQR"])
 # graficos(resultado)
 
