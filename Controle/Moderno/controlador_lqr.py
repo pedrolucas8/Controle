@@ -20,8 +20,14 @@ def controlador_lqr(sys_malha_aberta, A, B, C, D, Q_LQ_controlador, R_LQ_control
     """
 
     K_LQ, S, P_LQ = ct.lqr(sys_malha_aberta, Q_LQ_controlador, R_LQ_controlador)
-    F_LQ = A - B * K_LQ
-    sys_mf_LQ = ct.ss(F_LQ, B, C, D)
+    
+    F_LQ = A - np.matmul(B, K_LQ)
+    C_LQ = C - np.matmul(D, K_LQ)
+
+    B0 = np.zeros(B.shape)
+    D0 = np.zeros(D.shape)
+
+    sys_mf_LQ = ct.ss(F_LQ, B0, C_LQ, D0)
 
     LQR = structtype(
         Polos = P_LQ,
