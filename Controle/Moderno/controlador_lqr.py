@@ -1,14 +1,17 @@
 from ..bibliotecas import *
-from ..structtype import structtype 
+from ..structtype import structtype
 
 
-def controlador_lqr(sys_malha_aberta, A, B, C, D, Q_LQ_controlador, R_LQ_controlador):
+def controlador_lqr(
+    sys_malha_aberta, A, B2, B1, C, D, Q_LQ_controlador, R_LQ_controlador
+):
     """Síntese do controlador linear quadrático
 
     Argumentos:
         sys_malha_aberta (sys): sistema de malha aberta
         A (matriz): Matriz de estados
         B2 (matriz): Matriz de entradas de controle
+        B2 (matriz): Matriz de entradas de distúrbio
         C (matriz): Matriz de observacao
         D (matriz): Matriz de alimentação direta
     Calcula:
@@ -20,21 +23,21 @@ def controlador_lqr(sys_malha_aberta, A, B, C, D, Q_LQ_controlador, R_LQ_control
     """
 
     K_LQ, S, P_LQ = ct.lqr(sys_malha_aberta, Q_LQ_controlador, R_LQ_controlador)
-    
-    F_LQ = A - np.matmul(B, K_LQ)
+
+    F_LQ = A - np.matmul(B2, K_LQ)
     C_LQ = C - np.matmul(D, K_LQ)
 
-    B0 = np.zeros(B.shape)
-    D0 = np.zeros(D.shape)
+    # B0 = np.zeros(B.shape)
+    # D0 = np.zeros(D.shape)
 
-    sys_mf_LQ = ct.ss(F_LQ, B0, C_LQ, D0)
+    sys_mf_LQ = ct.ss(F_LQ, B1, C_LQ, D)
 
     LQR = structtype(
-        Polos = P_LQ,
-        Ganhos = K_LQ,
-        F = F_LQ,
-        Q = Q_LQ_controlador,
-        R = R_LQ_controlador,
-        sys_mf = sys_mf_LQ
+        Polos=P_LQ,
+        Ganhos=K_LQ,
+        F=F_LQ,
+        Q=Q_LQ_controlador,
+        R=R_LQ_controlador,
+        sys_mf=sys_mf_LQ,
     )
     return LQR
