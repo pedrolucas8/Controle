@@ -60,3 +60,13 @@ def controle_moderno(sist):
     Ro = np.identity(R_LQ.shape[0])
     sist.Observador.LQR = structtype()
     sist.Observador.LQR.P = observador_lqr(sys_malha_aberta, A, C, Qo, Ro)
+
+    # ========== SEGUIDORES ========== %
+    # REFERÊNCIA CONSTANTE
+    K_ref = sist.Controlador.LQR.P.Ganhos  # matriz de ganho
+    T = np.arange(0, 20, 0.01)  # vetor de tempo
+    estado = 0  # indice do estado que você que observar (referência vem da matriz C, neste caso 0 corresponde à vel. horizontal)
+    ref = 3  # valor da referência (ex. 3 m/s)
+    sist.SeguidorConstante = seguidor_referencia_constante(
+        A, B2, C, D, K_ref, T, estado=estado, ref=ref
+    )
