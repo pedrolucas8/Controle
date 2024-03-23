@@ -7,16 +7,18 @@ Retorna:
 from Controle import *
 from Controle.Moderno import *
 
+
 def controle_moderno(sist):
     # VARIÁVEIS QUE SERÃO USADAS
-    A  = sist.sistema.A
+    A = sist.sistema.A
     B2 = sist.sistema.B2
-    C  = sist.sistema.C
-    D  = sist.sistema.D2
+    B1 = sist.sistema.B1
+    C = sist.sistema.C
+    D = sist.sistema.D2
     sys_malha_aberta = sist.sys_malha_aberta
 
     # ========== SÍNTESE DO CONTROLADOR ========== %
-    sist.Controlador = structtype() 
+    sist.Controlador = structtype()
     # ALOCAÇÃO DE POLOS
     polos = [
         np.array([-0.5 + 2j, -0.5 - 2j, -30 + 5j, -30 - 5j]),
@@ -28,27 +30,26 @@ def controle_moderno(sist):
     sist.Controlador.Alocacao = structtype()
     for i in range(len(polos)):
         lab = f"P{i+1}"
-        val = controlador_alocacao_polos(polos[i], A, B2, C, D)
-        sist.Controlador.Alocacao.SetAttr(lab,val)
+        val = controlador_alocacao_polos(polos[i], A, B2, B1, C, D)
+        sist.Controlador.Alocacao.SetAttr(lab, val)
 
     # LINEAR QUADRÁTICO
-    Q_LQ = np.array([
-        0.05,  # penaliza u
-        0.2,  # penaliza w
-        0.08,  # penaliza q
-        1,  # penaliza theta
-    ])
-    R_LQ = np.array([
-        1,  # penaliza eta
-        0.1  # penaliza tau
-    ])
+    Q_LQ = np.array(
+        [
+            0.05,  # penaliza u
+            0.2,  # penaliza w
+            0.08,  # penaliza q
+            1,  # penaliza theta
+        ]
+    )
+    R_LQ = np.array([1, 0.1])  # penaliza eta  # penaliza tau
     sist.Controlador.LQR = structtype()
-    sist.Controlador.LQR.P = controlador_lqr(sys_malha_aberta, A, B2, C, D, np.diag(Q_LQ),np.diag(R_LQ))
-
-
+    sist.Controlador.LQR.P = controlador_lqr(
+        sys_malha_aberta, A, B2, B1, C, D, np.diag(Q_LQ), np.diag(R_LQ)
+    )
 
     # ========== SÍNTESE DO OBSERVADOR ========== %
-    sist.Observador = structtype() 
+    sist.Observador = structtype()
     # ALOCAÇÃO DE POLOS
     P = np.array([-10 + 10j, -10 - 10j, -20, -30])
     sist.Observador.Alocacao = structtype()
@@ -58,5 +59,4 @@ def controle_moderno(sist):
     Qo = 10 * np.identity(Q_LQ.shape[0])  # minimizar o erro
     Ro = np.identity(R_LQ.shape[0])
     sist.Observador.LQR = structtype()
-    sist.Observador.LQR.P = observador_lqr(sys_malha_aberta, A, C, Qo,Ro)
-    
+    sist.Observador.LQR.P = observador_lqr(sys_malha_aberta, A, C, Qo, Ro)
