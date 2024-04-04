@@ -14,7 +14,7 @@ def controle_moderno(sist):
     B2 = sist.sistema.B2
     B1 = sist.sistema.B1
     C = sist.sistema.C
-    D = sist.sistema.D2
+    D = sist.sistema.D
     sys_malha_aberta = sist.sys_malha_aberta
 
     # ========== SÍNTESE DO CONTROLADOR ========== %
@@ -30,7 +30,7 @@ def controle_moderno(sist):
     sist.Controlador.Alocacao = structtype()
     for i in range(len(polos)):
         lab = f"P{i+1}"
-        val = controlador_alocacao_polos(polos[i], A, B2, B1, C, D)
+        val = controlador_alocacao_polos(A, B1, B2, C, D, polos[i])
         sist.Controlador.Alocacao.SetAttr(lab, val)
 
     # LINEAR QUADRÁTICO
@@ -44,9 +44,7 @@ def controle_moderno(sist):
     )
     R_LQ = np.array([1, 0.1])  # penaliza eta  # penaliza tau
     sist.Controlador.LQR = structtype()
-    sist.Controlador.LQR.P = controlador_lqr(
-        sys_malha_aberta, A, B2, B1, C, D, np.diag(Q_LQ), np.diag(R_LQ)
-    )
+    sist.Controlador.LQR.P = controlador_lqr(A, B2, B1, C, D, np.diag(Q_LQ), np.diag(R_LQ))
 
     # ========== SÍNTESE DO OBSERVADOR ========== %
     sist.Observador = structtype()

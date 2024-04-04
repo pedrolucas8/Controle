@@ -23,8 +23,7 @@ def def_sistema(sist):
     C = np.array([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]])
 
     # Matriz de alimentação direta
-    D1 = np.zeros((np.shape(C)[0], np.shape(B1)[1]))
-    D2 = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
+    D = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
 
     # Nome das variáveis
     estados = [
@@ -43,8 +42,7 @@ def def_sistema(sist):
         B1=B1,
         B2=B2,
         C=C,
-        D1=D1,
-        D2=D2,
+        D=D,
         estados=estados,
         controle=controle,
         perturbacoes=perturbacoes,

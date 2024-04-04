@@ -2,9 +2,7 @@ from ..bibliotecas import *
 from ..structtype import structtype
 
 
-def controlador_lqr(
-    sys_malha_aberta, A, B2, B1, C, D, Q_LQ_controlador, R_LQ_controlador
-):
+def controlador_lqr(A, B1, B2, C, D, Q_LQ, R_LQ):
     """Síntese do controlador linear quadrático
 
     Argumentos:
@@ -22,22 +20,22 @@ def controlador_lqr(
         LQR (struct): struct com as informações do projeto
     """
 
-    K_LQ, S, P_LQ = ct.lqr(sys_malha_aberta, Q_LQ_controlador, R_LQ_controlador)
+    K_LQ, S, P_LQ = ct.lqr(A, B2, Q_LQ, R_LQ)
 
     F_LQ = A - np.matmul(B2, K_LQ)
     C_LQ = C - np.matmul(D, K_LQ)
 
     # B0 = np.zeros(B.shape)
-    # D0 = np.zeros(D.shape)
+    D0 = np.zeros(D.shape)
 
-    sys_mf_LQ = ct.ss(F_LQ, B1, C_LQ, D)
+    sys_mf_LQ = ct.ss(F_LQ, B1, C_LQ, D0)
 
     LQR = structtype(
         Polos=P_LQ,
         Ganhos=K_LQ,
         F=F_LQ,
-        Q=Q_LQ_controlador,
-        R=R_LQ_controlador,
+        Q=Q_LQ,
+        R=R_LQ,
         sys_mf=sys_mf_LQ,
     )
     return LQR

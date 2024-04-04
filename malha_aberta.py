@@ -6,8 +6,7 @@ def malha_aberta(sist):
     # B1 = sist.sistema.B1
     B2 = sist.sistema.B2
     C = sist.sistema.C
-    # D1 = sist.sistema.D1
-    D2 = sist.sistema.D2
+    D = sist.sistema.D
     lbl_estados = sist.sistema.estados
     lbl_controle = sist.sistema.controle
     # lbl_perturbacoes = sist.sistema.perturbacoes
@@ -19,7 +18,7 @@ def malha_aberta(sist):
         A,
         B2,
         C,
-        D2,
+        D,
         inputs=lbl_controle,
         outputs=lbl_saidas,
         states=lbl_estados,

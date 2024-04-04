@@ -2,7 +2,7 @@ from ..bibliotecas import *
 from ..structtype import structtype
 
 
-def controlador_alocacao_polos(P1, A, B2, B1, C, D):
+def controlador_alocacao_polos(A, B1, B2, C, D, P1):
     # Alocação de polos para o controlador
     # Ref: Capitulo 10 do livro Flight Dynamics Principles (Cook)
     # [P1, K1] = alocacao_Cook(A, B);
@@ -14,9 +14,9 @@ def controlador_alocacao_polos(P1, A, B2, B1, C, D):
     C1 = C - np.matmul(D, K1)
 
     # B0 = np.zeros(B2.shape)
-    # D0 = np.zeros(D.shape)
+    D0 = np.zeros(D.shape)
 
-    sys_mf1 = ct.ss(F1, B1, C1, D)
+    sys_mf1 = ct.ss(F1, B1, C1, D0)
 
     Alocacao = structtype(
         Polos=P1,
