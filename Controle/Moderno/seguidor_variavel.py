@@ -75,10 +75,12 @@ def seguidor_variavel(A, B1, B2, C, D, K, Ar, Cb):
         (A - B2 K)^T N^T = Cb^T
         (N B2) Kex = (N Fex)
     """
-    N = np.linalg.solve( F.transpose(),Cb.transpose())
+    N = np.linalg.solve(F.transpose(),Cb.transpose())
+    N = N.transpose()
+
     Kex = np.linalg.solve(N@B2,N@Fex)
 
-    Bex = np.hstack(( B1 , B2@K)) - B2@Kex
+    Bex = np.hstack(( B1 , B2@K )) - B2@Kex
 
     Cr = C - D@K
 
@@ -93,6 +95,7 @@ def seguidor_variavel(A, B1, B2, C, D, K, Ar, Cb):
     Seguidor = structtype(
         Ganhos = K,
         F = F,
+        Kex = Kex,
         sys_mf=sys_mf1,
     )
     return Seguidor

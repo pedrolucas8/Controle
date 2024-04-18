@@ -8,7 +8,8 @@ from Controle.Moderno import *
 A = np.array([[0,1],[-1,0]])
 print('polos de sem controle')
 print(np.linalg.eig(A)[0])
-B1 = np.array([[0],[1]])
+# B1 = np.array([[0],[1]])
+B1 = np.matrix([[1,0],[0,1]])
 B2 = np.array([[0],[1]])
 CT = cmat.ctrb(A,B2);
 print('posto da matriz de controlabilidade')
@@ -22,6 +23,7 @@ C1 = np.array([1,0]) # -> C_barra
 v = [-1+1j,-1-1j]
 print('ganho de realimentaçao')
 K = scipy.signal.place_poles(A, B2, v, method="YT", maxiter=30).gain_matrix
+print(K)
 F = A-B2@K
 F1 = np.linalg.inv(F)
 F2 = np.hstack(( B1, A-Ar ))
@@ -33,7 +35,7 @@ Ao = np.vstack((
     np.hstack((Ax,Ar))
 )) # [Aw Ax;Ax Ar]
 Ay = np.hstack((B1, B2@K))-B2@Ke
-Ay = np.hstack((Ay, np.zeros((2,1))))
+# Ay = np.hstack((Ay, np.zeros((2,1))))
 AT = np.vstack((
         np.hstack((A-B2*K, Ay)),
         np.hstack((np.zeros((4,2)), Ao))
@@ -42,7 +44,19 @@ xTo = np.matrix([1,0,1,0,1,0]).transpose()
 sys = ct.ss(AT,xTo,AT,xTo)
 (y,T) = cmat.step(sys,30)
 
+
 import matplotlib.pyplot as plt
+
 plt.plot(T,y[:,0].flatten())
-yref = [ np.sin(1*t) for t in T]
+yref = [ np.cos(1*t) for t in T]
 plt.plot(T,yref)
+plt.title("Posição")
+plt.grid()
+plt.show()
+
+plt.plot(T,y[:,1].flatten())
+yref = [ -np.sin(1*t) for t in T]
+plt.plot(T,yref)
+plt.title("Velocidade")
+plt.grid()
+plt.show()
