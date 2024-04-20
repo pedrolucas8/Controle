@@ -3,9 +3,26 @@ from ..structtype import structtype
 
 
 def controlador_alocacao_polos(A, B1, B2, C, D, P1):
-    # Alocação de polos para o controlador
-    # Ref: Capitulo 10 do livro Flight Dynamics Principles (Cook)
-    # [P1, K1] = alocacao_Cook(A, B);
+    """
+    Sistema
+        x' = A x + B1 xw + B2 u
+        y  = C x + D u
+    Assumindo que todo o vetor de estado possa ser obtido das medidas
+    Ex: C é inversível e D=0; ou estado obtido por um observador
+    A atuação de controle é dada por
+        u = - K x
+        x' = A x + B1 xw - B2 K x
+        x' = (A - B2 K) x + B1 xw
+    Ignorando o termo dos distúrbios
+        x' = (A - B2 K) x
+        x' = F x
+    A estabilidade do sistema depende dos autovalores (polos) da matriz F.
+    Esses polos podem ser alocados pelo designer através da matriz K
+
+    O método de alocação manual requer a escolha dos polos para o
+    cálculo direto dos termos da matriz de ganhos K. Para os sistemas MIxO, a
+    matriz não é única e é necessário outros requisitos numéricos (por padrão lstsq)
+    """
 
     K1 = scipy.signal.place_poles(A, B2, P1, method="YT", maxiter=30)
     K1 = K1.gain_matrix

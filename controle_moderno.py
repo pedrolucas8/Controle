@@ -21,6 +21,9 @@ def controle_moderno(sist):
     sist.Controlador = structtype()
     # ALOCAÇÃO DE POLOS
     polos = [
+        # Alocação de polos para o controlador
+        # Ref: Capitulo 10 do livro Flight Dynamics Principles (Cook)
+        # [P1, K1] = alocacao_Cook(A, B);
         np.array([-0.5 + 2j, -0.5 - 2j, -30 + 5j, -30 - 5j]),
         np.array([-0.5 + 4j, -0.5 - 4j, -25 - 1.5j, -25 + 1.5j]),
         np.array([-0.5 + 1j, -0.5 - 1j, -4.5 + 6j, -4.5 - 6j]),
