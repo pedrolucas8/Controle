@@ -4,7 +4,7 @@ from .structtype import structtype
 
 def def_sistema(sist):
     # Matriz de estados. x = [u, w, q, theta]'
-    A = np.array(
+    A = np.matrix(
         [
             [-0.2655, -0.1235, 0.8388, -9.7925],
             [-1.4412, -3.7332, 15.2192, 0.5863],
@@ -14,13 +14,13 @@ def def_sistema(sist):
     )
 
     # # Matriz de entrada de disturbios
-    B1 = np.array(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
+    B1 = np.matrix(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
 
     # Matriz de entradas de controle
-    B2 = np.array([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
+    B2 = np.matrix([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
 
     # Matriz de observacao y = [u, w]'
-    C = np.array([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]])
+    C = np.matrix([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]])
 
     # Matriz de alimentação direta
     D = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
