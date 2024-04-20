@@ -5,13 +5,17 @@ from Controle import *
 from Controle.Moderno import *
 
 # Seguidor de sinal variante no tempo
-A = np.matrix([[0,1],[-1,0]])
-B1 = np.matrix([[1,0],[0,1]])
-B2 = np.matrix([[0],[1]])
+Wa = 1
+Ww = 10
+Wr = 1.4
+
+A = np.matrix([[0,1],[-Wa**2,0]])
+B1 = np.matrix([[0,0],[1,0]])
+B2 = np.matrix([[0],[Wa]])
 C = np.matrix([1,0])
 D = np.matrix([0])
-Aw = np.matrix([[0,1], [-100,0]]) # -> senoide w=10
-Ar = np.matrix([[0,1], [-1,0]]) # -> senoide w=1
+Aw = np.matrix([[0,1], [-Ww**2,0]])
+Ar = np.matrix([[0,1], [-Wr**2,0]])
 C1 = np.matrix([1,0]) # -> C_barra
 
 v = [-1+1j,-1-1j]
@@ -31,21 +35,21 @@ AT = np.vstack((
         np.hstack((A-B2@K, Ay)),
         np.hstack((np.zeros((4,2)), Ao))
 )) # -> A_barra
-xTo = np.matrix([1,0,1,0,1,0]).transpose()
-sys = ct.ss(AT,xTo,AT,xTo)
-(y,T) = cmat.step(sys,30)
+xTo = np.matrix([0,0,0,Ww,0,Wr]).transpose()
+sys = ct.ss(AT,xTo,np.identity(6),np.zeros((6,1)))
+y,T = cmat.initial(sys,30,X0=xTo)
 
 import matplotlib.pyplot as plt
 
 plt.plot(T,y[:,0].flatten())
-yref = [ np.cos(1*t) for t in T]
+yref = [np.sin(Wr*t) for t in T]
 plt.plot(T,yref)
 plt.title("Posição")
 plt.grid()
 plt.show()
 
 plt.plot(T,y[:,1].flatten())
-yref = [ -np.sin(1*t) for t in T]
+yref = [Wr*np.cos(Wr*t) for t in T]
 plt.plot(T,yref)
 plt.title("Velocidade")
 plt.grid()
