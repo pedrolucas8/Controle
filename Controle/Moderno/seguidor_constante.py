@@ -6,10 +6,10 @@ def seguidor_constante(A, B1, B2, C, D, K):
 
     """
     Sistema
-        x' = A x + B1 w + B2 u
+        x' = A x + B1 xw + B2 u
         y  = C x + D u
     Em regime permanente
-        0   = A xrp + B2 urp + B1 w 
+        0   = A xrp + B2 urp + B1 xw 
         yrp = C xrp + D  urp
     Deseja-se que a medida siga uma referência
         yrp = xr
@@ -19,7 +19,7 @@ def seguidor_constante(A, B1, B2, C, D, K):
         xrp = Nx xr -> Nx tamanho (nx, ny)
         urp = Nu xr -> Nu tamanho (nu, ny)
     Voltando para a equação de regime permanente
-        0 xr = A Nx xr + B2 Nu xr + B1 w 
+        0 xr = A Nx xr + B2 Nu xr + B1 xw 
         I xr = C Nx xr + D  Nu xr
     Ignorando o termo dos distúrbios, 
     para um caso não trivial (xr!=0)
@@ -28,7 +28,7 @@ def seguidor_constante(A, B1, B2, C, D, K):
     Ou seja
         Lambda Nxu = RHS
     Resolvendo para Nxu, obtemos a nova dinâmica
-        x' = (A - B2 K) x + B2 (Nu + K Nx) xr + B1 w
+        x' = (A - B2 K) x + B2 (Nu + K Nx) xr + B1 xw
         y  = (C - D  K) x + D  (Nu + K Nx) xr
     """
 
