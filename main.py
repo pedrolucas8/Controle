@@ -6,31 +6,28 @@ Pedro Lucas - 11894520
 
 # importando as bibliotecas necessárias
 from Controle import *
-from malha_aberta import malha_aberta
-from controle_moderno import controle_moderno
+from Scripts import *
 
 # Definicao do sistema #
-sist = structtype()
-
-def_sistema(sist)
+sist = get_sistema()
 
 malha_aberta(sist)
 
 controle_moderno(sist)
 
-fig = Plots.plot_polos(sist.sys_malha_aberta)
-fig.update_layout(xaxis_range=[-5,2])
-fig.show()
+# fig = Plots.plot_polos(sist.sys_malha_aberta)
+# fig.update_layout(xaxis_range=[-5,2])
+# fig.show()
 # fig.write_image("fig_polos.png", scale=2)
 
-fig = Plots.plot_step(sist.sys_malha_aberta)
+# fig = Plots.plot_step(sist.sys_malha_aberta)
 # fig.update_layout(xaxis_range=[-5,2])
-fig.show()
+# fig.show()
 # fig.write_image("fig_step.png", scale=2)
 
-fig = Plots.plot_initial(sist.Controlador.Alocacao.P1.sys_mf,X0=1)
+# fig = Plots.plot_initial(sist.Controlador.Alocacao.P1.sys_mf,X0=1)
 # fig.update_layout(xaxis_range=[-5,2])
-fig.show()
+# fig.show()
 # fig.write_image("fig_step.png", scale=2)
 
 # print(resultado["Observador"]["LQR"])

@@ -71,3 +71,8 @@ def controle_moderno(sist):
     sist.SeguidorConstante = seguidor_referencia_constante(
         A, B2, C, D, K_ref, T, estado=estado, ref=ref
     )
+
+
+
+if __name__=="__main__":
+    controle_moderno(sist) # type: ignore

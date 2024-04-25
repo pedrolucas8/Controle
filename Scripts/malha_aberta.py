@@ -35,3 +35,9 @@ def malha_aberta(sist):
 
     # ANÁLISE DE OBSERVABILIDADE
     sist.Observabilidade = observabilidade(A, C)
+
+
+
+
+if __name__=="__main__":
+    malha_aberta(sist) # type: ignore
