@@ -78,7 +78,8 @@ def seguidor_variavel(A, B1, B2, C, D, K, Ar, Cb):
     N = np.linalg.solve(F.transpose(),Cb.transpose())
     N = N.transpose()
 
-    Kex = np.linalg.solve(N@B2,N@Fex)
+    # Kex = np.linalg.solve(N@B2,N@Fex)
+    Kex = np.linalg.lstsq(N@B2,N@Fex,None)[0]
 
     Bex = np.hstack(( B1 , B2@K )) - B2@Kex
 
@@ -96,6 +97,7 @@ def seguidor_variavel(A, B1, B2, C, D, K, Ar, Cb):
         Ganhos = K,
         F = F,
         Kex = Kex,
+        N = N,
         sys_mf=sys_mf1,
     )
     return Seguidor
