@@ -6,7 +6,7 @@ from Controle.bibliotecas import *
 from Controle.define_sistema import def_sistema
 from Controle.structtype import structtype
 from Controle.Moderno.controlador_lqr import controlador_lqr
-from malha_aberta import malha_aberta
+from Scripts.malha_aberta import malha_aberta
 
 sist = structtype()
 def_sistema(sist)
@@ -15,7 +15,7 @@ A = sist.sistema.A
 B2 = sist.sistema.B2
 B1 = sist.sistema.B1
 C = sist.sistema.C
-D = sist.sistema.D1
+D = sist.sistema.D
 
 Q_LQ = np.array(
     [
@@ -30,14 +30,13 @@ R_LQ = np.array([1, 0.1])  # penaliza eta  # penaliza tau
 sist.Controlador = structtype()
 sist.Controlador.LQR = structtype()
 sist.Controlador.LQR.P = controlador_lqr(
-    sys_malha_aberta=sist.sys_malha_aberta,
     A=A,
     B2=B2,
     B1=B1,
     C=C,
     D=D,
-    Q_LQ_controlador=np.diag(Q_LQ),
-    R_LQ_controlador=np.diag(R_LQ),
+    Q_LQ=np.diag(Q_LQ),
+    R_LQ=np.diag(R_LQ),
 )
 
 K_ref = sist.Controlador.LQR.P.Ganhos  # matriz de ganho
