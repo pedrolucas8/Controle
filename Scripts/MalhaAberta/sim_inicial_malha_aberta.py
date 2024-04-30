@@ -4,13 +4,17 @@ from Controle import *
 from Controle.Moderno import *
 
 
-def sim_degrau_malha_aberta(sys):
+def sim_inicial_malha_aberta(sys):
 
     # === Configuração === #
     T = 20
 
-    input = 0
-    ref = 1 *np.pi/180
+    X0 = [
+        0,
+        0,
+        0,
+        10/57.3
+    ]
 
     show_var = "estados" # "saidas" / "estados" / "controles"
     estados = []  # indice do estado que você que observar (referência vem da matriz C, neste caso 0 corresponde à vel. horizontal)
@@ -28,23 +32,22 @@ def sim_degrau_malha_aberta(sys):
     nu = B2.shape[1]
 
     # === Contas === #
-    yout, t, xout = cmat.step(sys,T, input=input, return_x=True)
+    yout, t, xout = cmat.initial(sys,T, X0=X0, return_x=True)
 
     if show_var=="saidas": # mostrar saídas, matriz C
         if len(estados)==0:
             estados = range(yout.shape[1])
-        x = ref * yout[:,estados,0]
+        x = yout[:,estados]
         labels = lbl_saidas
     elif show_var=="estados": # mostrar estados, matriz A
         if len(estados)==0:
             estados = range(xout.shape[1])
-        x = ref * xout[:,estados,0]
+        x = xout[:,estados]
         labels = lbl_estados
     elif show_var=="controles":
         if len(estados)==0:
             estados = range(nu)
         x = np.zeros((len(t),nu))
-        x[:,input] += ref
         labels = lbl_controle
 
     # === Plot === #
@@ -58,7 +61,7 @@ def sim_degrau_malha_aberta(sys):
         ))
     
     fig.update_layout(
-        title="Resposta a entrada degrau",
+        title="Resposta a condição inicial",
         xaxis = dict(
             title= "Tempo [s]",
             # range = [min(self.WSs), max(self.WSs)],
@@ -104,6 +107,6 @@ def sim_degrau_malha_aberta(sys):
 
 
 if __name__=="__main__":
-    fig = sim_degrau_malha_aberta(sist.sys_malha_aberta) # type: ignore
+    fig = sim_inicial_malha_aberta(sist.sys_malha_aberta) # type: ignore
     fig.show()
-    fig.write_image("sim_degrau_malha_aberta.png", scale=2)
+    fig.write_image("sim_inicial_malha_aberta.png", scale=2)
