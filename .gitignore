@@ -8,3 +8,5 @@ struct_teste.py
 dados.pkl
 *.json
 __pycache__
+
+*.png
