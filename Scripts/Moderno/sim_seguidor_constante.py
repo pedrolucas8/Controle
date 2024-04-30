@@ -69,22 +69,6 @@ def sim_seguidor_constante(sistema,K):
         y = ref * np.array(u[:,estados])
         lbl = lbl_controle
 
-    # import matplotlib.pyplot as plt
-
-    # plt.plot(t, y_seguidor)
-    # plt.plot(t, ref * np.ones(np.shape(t)), "--", label="Referência")
-    # plt.title("Seguidor de Refencia Constante")
-    # plt.grid()
-    # plt.legend()
-    # plt.show()
-
-    # plt.plot(t, x_seguidor)
-    # plt.plot(t, ref * np.ones(np.shape(t)), "--", label="Referência")
-    # plt.title("Seguidor de Refencia Constante")
-    # plt.grid()
-    # plt.legend()
-    # plt.show()
-
     # === Plot === #
 
     fig = go.Figure()
