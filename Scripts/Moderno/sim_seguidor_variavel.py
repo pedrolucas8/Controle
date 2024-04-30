@@ -65,9 +65,9 @@ def sim_seguidor_variavel(sistema, K):
     Ke = seguidor.Kex
 
     if not feedback_disturbios:
-        Ke[:,:nw] = np.zeros((nx,nw))
+        Ke[:,:nw] = np.zeros((nu,nw))
     if not feedback_referencia:
-        Ke[:,nw:] = np.zeros((nx,nr))
+        Ke[:,nw:] = np.zeros((nu,nr))
 
     # matriz da dinâmica das variáveis exógenas (distúrbio e referência)
     Ax = np.zeros((nw,nr))
