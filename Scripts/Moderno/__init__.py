@@ -1,2 +1,4 @@
+from .sim_inicial_malha_fechada import sim_inicial_malha_fechada
+
 from .sim_seguidor_constante import sim_seguidor_constante
 from .sim_seguidor_variavel import sim_seguidor_variavel
