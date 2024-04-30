@@ -10,6 +10,9 @@ def sim_seguidor_variavel(sistema, K):
     feedback_disturbios = True
     feedback_referencia = True
 
+    show_var = "controles" # "saidas" / "estados" / "controles"
+    estados = []  # indice do estado que você que observar (referência vem da matriz C, neste caso 0 corresponde à vel. horizontal)
+
     # estado inicial
     x0 = np.array([0,0,0,0])
 
@@ -52,6 +55,7 @@ def sim_seguidor_variavel(sistema, K):
     lbl_estados = sistema.estados
     lbl_disturbios = sistema.perturbacoes
     lbl_controle = sistema.controle
+    lbl_saidas = sistema.saidas
 
     nx = A.shape[0]
     ny = C.shape[0]
@@ -90,28 +94,63 @@ def sim_seguidor_variavel(sistema, K):
     xTo = np.concatenate((x0,xw0,xr0))
     xTo = np.matrix(xTo).transpose()
     sys = ct.ss(AT,xTo,np.identity(AT.shape[0]),np.zeros(xTo.shape))
-    y,t = cmat.initial(sys,T,X0=xTo)
+    yout,t = cmat.initial(sys,T,X0=xTo)
+
+    x = yout[:,:nx]
 
     # === Plot === #
-
     fig = go.Figure()
 
-    for i in range(0,nx):
-        fig.add_trace(go.Scatter(
-            x=t, y=y[:,i].flatten(),
-            mode = "lines",
-            name = lbl_estados[i],
-        ))
-        fig.add_trace(go.Scatter(
-            x=t, y=y[:,nx+nw+i].flatten(),
-            mode = "lines",
-            name = "ref:"+lbl_estados[i],
-            line = dict(
-                # color='royalblue', 
-                # width=4, 
-                dash='dash',
-            ),
-        ))
+    if show_var=="saidas": # mostrar saídas, matriz C
+        if len(estados)==0:
+            estados = range(ny)
+        y = x @ C.transpose()
+        y = yout[:,estados]
+
+        for i in range(y.shape[1]):
+            fig.add_trace(go.Scatter(
+                x=t, y=y[:,i].flatten(),
+                mode = "lines",
+                name = lbl_saidas[i],
+            ))
+
+    elif show_var=="estados": # mostrar estados, matriz A
+        if len(estados)==0:
+            estados = range(nx)
+        y = x
+
+        for i in range(y.shape[1]):
+            fig.add_trace(go.Scatter(
+                x=t, y=y[:,i].flatten(),
+                mode = "lines",
+                name = lbl_estados[i],
+            ))
+            fig.add_trace(go.Scatter(
+                x=t, y=yout[:,nx+nw+i].flatten(),
+                mode = "lines",
+                name = "ref:"+lbl_estados[i],
+                line = dict(
+                    # color='royalblue', 
+                    # width=4, 
+                    dash='dash',
+                ),
+            ))
+
+    elif show_var=="controles":
+        if len(estados)==0:
+            estados = range(nu)
+        xex = yout[:,nx:]
+        Kex = np.hstack(( np.zeros((nu,nw)) , K )) - Ke
+        y = - np.array(x @ K.transpose() + xex @ Kex.transpose() )
+
+        for i in range(y.shape[1]):
+            fig.add_trace(go.Scatter(
+                x=t, y=y[:,i].flatten(),
+                mode = "lines",
+                name = lbl_controle[i],
+            ))
+
+    
     
     fig.update_layout(
         title="Simulação seguidor variável",
@@ -162,7 +201,7 @@ def sim_seguidor_variavel(sistema, K):
 
 
 if __name__=="__main__":
-    K = sist.Controlador.Alocacao.P5.Ganhos # type: ignore
+    K = sist.Controlador.LQR.P.Ganhos # type: ignore
     fig = sim_seguidor_variavel(sist.sistema,K) # type: ignore
     fig.show()
     fig.write_image("sim_seguidor_variavel.png", scale=2)
