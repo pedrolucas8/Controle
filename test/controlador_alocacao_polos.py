@@ -1,3 +1,9 @@
+import os
+import sys
+
+diretorio_projeto = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(diretorio_projeto)
+
 from Controle.Moderno.controlador_alocacao_polos import *
 
 A = np.array(
