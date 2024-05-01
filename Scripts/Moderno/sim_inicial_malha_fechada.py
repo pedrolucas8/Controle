@@ -16,7 +16,7 @@ def sim_inicial_malha_fechada(sistema,K):
         10/57.3
     ]
 
-    show_var = "saidas" # "saidas" / "estados" / "controles"
+    show_var = "estados" # "saidas" / "estados" / "controles"
     estados = []  # indice do estado que você que observar (referência vem da matriz C, neste caso 0 corresponde à vel. horizontal)
     
 
@@ -46,6 +46,7 @@ def sim_inicial_malha_fechada(sistema,K):
     B0 = np.zeros(B2.shape)
     D0 = np.zeros(D.shape)
     sys = ct.ss(F, B0, Cr, D0)
+    print(ct.damp(sys))
     yout, t, xout = cmat.initial(sys,T, X0=X0, return_x=True)
 
     if show_var=="saidas": # mostrar saídas, matriz C
@@ -121,7 +122,15 @@ def sim_inicial_malha_fechada(sistema,K):
 
 
 if __name__=="__main__":
-    K = sist.Controlador.LQR.P.Ganhos # type: ignore
+    # K = sist.Controlador.LQR.P.Ganhos # type: ignore
+    # K = sist.Controlador.Alocacao.P3.Ganhos # type: ignore
+
+    # polos = np.array([-5 +10j , -5 -10j ,-0.27+0.83j, -0.27-0.83j])
+    # polos = np.array([-0.20 + .20j, -0.20 - 0.20j, -4.5 + 9j, -4.5 - 9j])
+    # polos = np.array([-5 + 10j, -5 - 10j, -.81 + .81j, -.81 - .81j])
+    polos = np.array([-4 + 5j, -4 - 5j, -.5 + .4j, -.5 - .4j])
+    controlador = controlador_alocacao_polos(sist.sistema.A, sist.sistema.B1, sist.sistema.B2, sist.sistema.C, sist.sistema.D, polos)
+    K = controlador.Ganhos
     fig = sim_inicial_malha_fechada(sist.sistema,K) # type: ignore
     fig.show()
     fig.write_image("sim_inicial_malha_fechada.png", scale=2)
