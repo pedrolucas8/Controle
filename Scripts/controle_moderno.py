@@ -47,20 +47,37 @@ def controle_moderno(sist):
     )
     R_LQ = np.array([1, 0.1])  # penaliza eta  # penaliza tau
     sist.Controlador.LQR = structtype()
-    sist.Controlador.LQR.P = controlador_lqr(A, B2, B1, C, D, np.diag(Q_LQ), np.diag(R_LQ))
+    sist.Controlador.LQR.P = controlador_lqr(
+        A, B2, B1, C, D, np.diag(Q_LQ), np.diag(R_LQ)
+    )
 
     # ========== SÍNTESE DO OBSERVADOR ========== %
     sist.Observador = structtype()
     # ALOCAÇÃO DE POLOS
-    P = np.array([-10 + 10j, -10 - 10j, -20, -30])
+    P = sist.Controlador.LQR.P.Polos
+    Po = 5 * sist.Controlador.LQR.P.Polos
     sist.Observador.Alocacao = structtype()
-    sist.Observador.Alocacao.P = observador_alocacao_polos(P, A, C)
+    sist.Observador.Alocacao.P = observador_alocacao_polos(Po, A, C)
 
     # LINEAR QUADRÁTICO
-    Qo = 10 * np.identity(Q_LQ.shape[0])  # minimizar o erro
-    Ro = np.identity(R_LQ.shape[0])
+    Qo = np.array(
+        [
+            0.5,
+            1,
+            0.8,
+            10,
+        ]
+    )
+    Ro = np.array(
+        [
+            10,
+            1,
+        ]
+    )
     sist.Observador.LQR = structtype()
-    sist.Observador.LQR.P = observador_lqr(sys_malha_aberta, A, C, Qo, Ro)
+    sist.Observador.LQR.P = observador_lqr(
+        sys_malha_aberta, A, C, np.diag(Qo), np.diag(Ro)
+    )
 
     # ========== SEGUIDORES ========== %
     # REFERÊNCIA CONSTANTE
@@ -73,6 +90,5 @@ def controle_moderno(sist):
     )
 
 
-
-if __name__=="__main__":
-    controle_moderno(sist) # type: ignore
+if __name__ == "__main__":
+    controle_moderno(sist)  # type: ignore
