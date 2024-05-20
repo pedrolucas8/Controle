@@ -141,18 +141,15 @@ def sim_evolucao_erro(sistema, K, Ko, x0, e0):
     return Lambda
 
 
-def e(sistema, K, Ko, x0, e0):
-    tss = 0.001
-    t = np.arange(0, 10 + tss, tss)
+def e(sistema, K, Ko, x0, e0, dt, T):
+    t = np.arange(0, T + dt, dt)
     x = np.array(x0)
     e = np.array(e0)
 
     xe = np.concatenate((x, e))
 
     erro0 = np.zeros((len(t), len(xe)))
-    print(erro0)
     erro0[0, :] = xe
-    erro2 = np.copy(erro0)
 
     A = sistema.A
     B2 = sistema.B2
@@ -177,14 +174,14 @@ def e(sistema, K, Ko, x0, e0):
 
     Lambda = np.block([[A11, A12], [A21, A22]])
 
-    phi_LQR = expm(Lambda * tss)
+    phi_LQR = expm(Lambda * dt)
 
     for i in range(1, len(t)):
         erro0[i, :] = phi_LQR @ erro0[i - 1, :].T
 
     x_t = erro0[:, : len(x0)]  # x(t)
     e_t = erro0[:, len(x0) :]  # e(t)
-    print(erro0)
+
     labels = lbl_estados
 
     # === Plot === #
@@ -261,7 +258,7 @@ def e(sistema, K, Ko, x0, e0):
             # gridcolor = "lightgrey",
         ),
         yaxis=dict(
-            title="Erro das variávies de estado",
+            title="Variávies de estado",
             # range = [min(self.PWs), max(self.PWs)],
             # dtick = 0,
             # tickrange = [0,1],
@@ -299,9 +296,9 @@ if __name__ == "__main__":
     K = sist.Controlador.LQR.P.Ganhos
     Ko = sist.Observador.LQR.P.Ganhos
 
-    x0 = [20, 4, 0, 10 / 57.3]
-    e0 = 0.9 * np.ones(len(x0))
-    fig, fig2, erro = e(sistema=sist.sistema, K=K, Ko=Ko, x0=x0, e0=e0)
+    x0 = [0, 0, 0.1, 10 / 57.3]
+    e0 = 0.1 * np.ones(len(x0))
+    fig, fig2, erro = e(sistema=sist.sistema, K=K, Ko=Ko, x0=x0, e0=e0, dt=0.001, T=5)
     fig.show()
     fig.write_image("evolucao_erro_LQR.png", scale=2)
     fig2.show()
