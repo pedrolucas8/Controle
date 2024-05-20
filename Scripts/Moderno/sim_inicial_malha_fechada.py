@@ -39,10 +39,10 @@ def sim_inicial_malha_fechada(sistema, K):
     C = sistema.C
     D = sistema.D
 
-    lbl_estados = sistema.estados
-    lbl_disturbios = sistema.perturbacoes
-    lbl_controle = sistema.controle
-    lbl_saidas = sistema.saidas
+    lbl_estados = sistema.estados.copy()
+    lbl_disturbios = sistema.perturbacoes.copy()
+    lbl_controle = sistema.controle.copy()
+    lbl_saidas = sistema.saidas.copy()
 
     nx = A.shape[0]
     ny = C.shape[0]
@@ -74,6 +74,12 @@ def sim_inicial_malha_fechada(sistema, K):
         x = -np.array(xout[:, :] @ K.transpose())
         labels = lbl_controle
 
+    for i in range(x.shape[1]):
+        if "[rad" in labels[i]:
+            x[:,i] *= 180/np.pi
+            labels[i] = labels[i].replace("[rad", "[deg")
+    
+
     # === Plot === #
     fig = go.Figure()
 
@@ -93,15 +99,24 @@ def sim_inicial_malha_fechada(sistema, K):
             title="Tempo [s]",
             # range = [min(self.WSs), max(self.WSs)],
             # nticks = 50,
-            # showgrid = True,
-            # gridcolor = "lightgrey",
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         yaxis=dict(
             title="Variáveis de " + show_var,
             # range = [min(self.PWs), max(self.PWs)],
             # dtick = 0,
             # tickrange = [0,1],
-            # gridcolor = "lightgrey"
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         showlegend=True,
         legend=dict(

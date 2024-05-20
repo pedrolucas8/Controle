@@ -228,14 +228,23 @@ def def_sistema(sist):
 
     # Nome das variáveis
     estados = [
-        "Vel Horizontal (u)",
-        "Vel Vertical (w)",
-        "Taxa Arfagem (q)",
-        "Ang Atitude (theta)",
+        "Vel. Horizontal (u) [m/s]",
+        "Vel. Vertical (w) [m/s]",
+        "Taxa Arfagem (q) [rad/s]",
+        "Ang. Atitude (θ) [rad]",
     ]
-    controle = ["Def Profundor (eta)", "Tração (tau)"]
-    perturbacoes = ["Vel vertical (Ugust)", "Acel vertical (U'gust)"]
-    saidas = ["Vel Horizontal (u)", "Vel Vertical (w)"]
+    controle = [
+        "Def. Profundor (η) [rad]", 
+        "Tração (τ) [N]",
+    ]
+    perturbacoes = [
+        "Vel. vertical (Ugust) [m/s]",
+        "Acel. vertical (U'gust) [m/s]",
+    ]
+    saidas = [
+        "Vel. Horizontal (u) [m/s]",
+        "Vel. Vertical (w) [m/s]",
+    ]
 
     # Salva o resultado
     sist.sistema = structtype(
