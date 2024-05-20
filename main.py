@@ -1,5 +1,6 @@
-"""Trabalho - Grupo 7
+"""Trabalho - Grupo M
 Júlia Jeszensky de Menezes - 11804790
+Júlio César de Andrade Oliveira - 12873615
 Luã de Souza Santos - 11803927
 Pedro Lucas - 11894520
 """
@@ -14,6 +15,8 @@ sist = get_sistema()
 malha_aberta(sist)
 
 controle_moderno(sist)
+
+# Moderno.sim_inicial_malha_fechada(sist)
 
 # fig = Plots.plot_polos(sist.sys_malha_aberta)
 # fig.update_layout(xaxis_range=[-5,2])
