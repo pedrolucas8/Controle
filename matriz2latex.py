@@ -3,6 +3,8 @@ from main import sist
 
 
 def matriz2latex(M, decimais=None):
+    if M.ndim == 1:
+        M = np.array([M])
     linhas, colunas = M.shape
     string_matrix = "\\begin{equation}\n\\begin{bmatrix}\n"
 
@@ -32,8 +34,6 @@ def matriz2latex(M, decimais=None):
 
 if __name__ == "__main__":
     M = sist.Observador.LQR.P.Polos
-    if M.ndim == 1:
-        M = np.array([M])
-    l, c = M.shape
-    print(l, c)
-    matriz2latex(M)
+    matriz2latex(
+        M,
+    )
