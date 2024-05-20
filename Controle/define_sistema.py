@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import root
-from structtype import structtype
+from .structtype import structtype
 
 
 def parametros_numericos():
@@ -195,9 +195,9 @@ def parametros_numericos():
             [0, 0],
         ]
     )
-    print(A)
-    print()
-    print(B)
+    # print(A)
+    # print()
+    # print(B)
     return A, B
 
 
@@ -214,14 +214,18 @@ def def_sistema(sist):
     # )
 
     # # Matriz de entrada de disturbios
-    B1 = np.matrix(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
+    # B1 = np.matrix(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
+    B1 = A[:,:2]
 
     # Matriz de entradas de controle
     # B2 = np.matrix([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
     B2 = B
 
     # Matriz de observacao y = [u, w]'
-    C = np.matrix([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]])
+    C = np.matrix([
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0]
+    ])
 
     # Matriz de alimentação direta
     D = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
@@ -258,7 +262,3 @@ def def_sistema(sist):
         perturbacoes=perturbacoes,
         saidas=saidas,
     )
-
-
-if __name__ == "__main__":
-    parametros_numericos()
