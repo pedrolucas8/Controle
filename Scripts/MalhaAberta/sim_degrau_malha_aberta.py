@@ -1,14 +1,3 @@
-import sys
-import os
-
-# Adiciona o diretório 'Controle' ao sys.path
-current_dir = os.path.dirname(__file__)
-parent_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
-controle_dir = os.path.abspath(os.path.join(parent_dir, "Controle"))
-print(f"Adicionando {controle_dir} ao sys.path")
-if controle_dir not in sys.path:
-    sys.path.append(controle_dir)
-
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from Controle import *
