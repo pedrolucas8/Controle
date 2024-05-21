@@ -7,10 +7,11 @@ def sim_seguidor_variavel(sistema, K):
 
     # === Configuração === #
     T = 30
-    feedback_disturbios = True
+    feedback_disturbios = False
     feedback_referencia = True
+    mostrar_ref = [2,3] # índices dos estados pra mostrar
 
-    show_var = "controles" # "saidas" / "estados" / "controles"
+    show_var = "estados" # "saidas" / "estados" / "controles"
     estados = []  # indice do estado que você que observar (referência vem da matriz C, neste caso 0 corresponde à vel. horizontal)
 
     # estado inicial
@@ -36,9 +37,11 @@ def sim_seguidor_variavel(sistema, K):
     
     # função de penalização dos erros
     C1 = np.matrix([
-        [0,0,0,1],
+        [1,0,0,0],
+        # [0,1,0,0],
         [0,0,1,0],
-        [0,0,1,1],
+        [0,0,0,1],
+        # [0,0,1,1],
     ]) # -> C_barra
 
 
@@ -52,10 +55,10 @@ def sim_seguidor_variavel(sistema, K):
     C  = sistema.C
     D  = sistema.D
 
-    lbl_estados = sistema.estados
-    lbl_disturbios = sistema.perturbacoes
-    lbl_controle = sistema.controle
-    lbl_saidas = sistema.saidas
+    lbl_estados = sistema.estados.copy()
+    lbl_disturbios = sistema.perturbacoes.copy()
+    lbl_controle = sistema.controle.copy()
+    lbl_saidas = sistema.saidas.copy()
 
     nx = A.shape[0]
     ny = C.shape[0]
@@ -100,41 +103,58 @@ def sim_seguidor_variavel(sistema, K):
 
     # === Plot === #
     fig = go.Figure()
+    cores = ['blue','red','green','black']
 
     if show_var=="saidas": # mostrar saídas, matriz C
         if len(estados)==0:
             estados = range(ny)
         y = x @ C.transpose()
         y = yout[:,estados]
+        lbl = lbl_saidas
 
         for i in range(y.shape[1]):
+            if "[rad" in lbl[i]:
+                y[:,i] *= 180/np.pi
+                lbl[i] = lbl[i].replace("[rad", "[deg")
             fig.add_trace(go.Scatter(
                 x=t, y=y[:,i].flatten(),
                 mode = "lines",
-                name = lbl_saidas[i],
+                name = lbl[i],
             ))
 
     elif show_var=="estados": # mostrar estados, matriz A
         if len(estados)==0:
             estados = range(nx)
         y = x
+        lbl = lbl_estados
 
         for i in range(y.shape[1]):
+            if "[rad" in lbl[i]:
+                y[:,i] *= 180/np.pi
+                yout[:,nx+nw+i] *= 180/np.pi
+                lbl[i] = lbl[i].replace("[rad", "[deg")
+
             fig.add_trace(go.Scatter(
                 x=t, y=y[:,i].flatten(),
                 mode = "lines",
-                name = lbl_estados[i],
+                name = lbl[i],
+                legendgroup = lbl[i],
+                line_color = cores[i],
             ))
-            fig.add_trace(go.Scatter(
-                x=t, y=yout[:,nx+nw+i].flatten(),
-                mode = "lines",
-                name = "ref:"+lbl_estados[i],
-                line = dict(
-                    # color='royalblue', 
-                    # width=4, 
-                    dash='dash',
-                ),
-            ))
+
+            if i in mostrar_ref:
+                fig.add_trace(go.Scatter(
+                    x=t, y=yout[:,nx+nw+i].flatten(),
+                    mode = "lines",
+                    name = "ref:"+lbl[i],
+                    legendgroup = lbl[i],
+                    line = dict(
+                        color=cores[i], 
+                        # width=4, 
+                        dash='dash',
+                    ),
+                    showlegend = False,
+                ))
 
     elif show_var=="controles":
         if len(estados)==0:
@@ -142,12 +162,16 @@ def sim_seguidor_variavel(sistema, K):
         xex = yout[:,nx:]
         Kex = np.hstack(( np.zeros((nu,nw)) , K )) - Ke
         y = - np.array(x @ K.transpose() + xex @ Kex.transpose() )
+        lbl = lbl_controle
 
         for i in range(y.shape[1]):
+            if "[rad" in lbl[i]:
+                y[:,i] *= 180/np.pi
+                lbl[i] = lbl[i].replace("[rad", "[deg")
             fig.add_trace(go.Scatter(
                 x=t, y=y[:,i].flatten(),
                 mode = "lines",
-                name = lbl_controle[i],
+                name = lbl[i],
             ))
 
     
@@ -158,15 +182,24 @@ def sim_seguidor_variavel(sistema, K):
             title= "Tempo [s]",
             # range = [min(self.WSs), max(self.WSs)],
             # nticks = 50,
-            # showgrid = True,
-            # gridcolor = "lightgrey",
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         yaxis = dict(
             title="Variáveis de estado",
             # range = [min(self.PWs), max(self.PWs)],
             # dtick = 0,
             # tickrange = [0,1],
-            # gridcolor = "lightgrey"
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
 
         showlegend=True,

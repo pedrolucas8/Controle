@@ -7,13 +7,14 @@ from Controle.Moderno import *
 def sim_seguidor_constante(sistema,K):
 
     # === Configuração === #
-    T = 20  # tempo da simulação
+    muda_saida = False
+    T = 12  # tempo da simulação
     
     input = 0 # variável de controle para a simulação
-    ref = 1  # valor da referência; amplitude do degrau (ex. 3 m/s)
+    ref = 1 # valor da referência; amplitude do degrau (ex. 3 m/s)
 
 
-    show_var = "saidas" # "saidas" / "estados" / "controles"
+    show_var = "estados" # "saidas" / "estados" / "controles"
     estados = []  # indice do estado que você que observar (referência vem da matriz C, neste caso 0 corresponde à vel. horizontal)
     
 
@@ -27,15 +28,22 @@ def sim_seguidor_constante(sistema,K):
     C  = sistema.C
     D  = sistema.D
 
-    lbl_estados = sistema.estados
-    lbl_disturbios = sistema.perturbacoes
-    lbl_controle = sistema.controle
-    lbl_saidas = sistema.saidas
+    lbl_estados = sistema.estados.copy()
+    lbl_disturbios = sistema.perturbacoes.copy()
+    lbl_controle = sistema.controle.copy()
+    lbl_saidas = sistema.saidas.copy()
 
     nx = A.shape[0]
     ny = C.shape[0]
     nw = B1.shape[1]
     nu = B2.shape[1]
+
+    if muda_saida:
+        C = np.matrix([
+            [1,0,0,0],
+            [0,0,0,1],
+        ])
+        lbl_saidas[1] = lbl_estados[3]
 
     # === Contas === #
     seguidor = seguidor_constante(A, B1, B2, C, D, K)
@@ -65,9 +73,16 @@ def sim_seguidor_constante(sistema,K):
     elif show_var=="controles":
         if len(estados)==0:
             estados = range(K.shape[0])
-        u = - x_saida[:,:,0] @ K.transpose()
+        xr = np.zeros(ny)
+        xr[input] = ref
+        u = - x_saida[:,:,0] @ K.transpose() + N @ xr
         y = ref * np.array(u[:,estados])
         lbl = lbl_controle
+
+    for i in range(y.shape[1]):
+        if "[rad" in lbl[i]:
+            y[:,i] *= 180/np.pi
+            lbl[i] = lbl[i].replace("[rad", "[deg")
 
     # === Plot === #
 
@@ -86,15 +101,23 @@ def sim_seguidor_constante(sistema,K):
             title= "Tempo [s]",
             # range = [min(self.WSs), max(self.WSs)],
             # nticks = 50,
-            # showgrid = True,
-            # gridcolor = "lightgrey",
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         yaxis = dict(
             title="Variáveis",
             # range = [min(self.PWs), max(self.PWs)],
             # dtick = 0,
-            # tickrange = [0,1],
-            # gridcolor = "lightgrey"
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
 
         showlegend=True,
