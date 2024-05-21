@@ -203,23 +203,23 @@ def parametros_numericos():
 
 def def_sistema(sist):
     # Matriz de estados. x = [u, w, q, theta]'
-    A, B = parametros_numericos()
-    # A = np.matrix(
-    #     [
-    #         [-0.2655, -0.1235, 0.8388, -9.7925],
-    #         [-1.4412, -3.7332, 15.2192, 0.5863],
-    #         [-0.3795, -6.3157, -4.7475, 0.0],
-    #         [0.0, 0.0, 1.0, 0.0],
-    #     ]
-    # )
+    # A, B = parametros_numericos()
+    A = np.matrix(
+        [
+            [-0.2655, -0.1235, 0.8388, -9.7925],
+            [-1.4412, -3.7332, 15.2192, 0.5863],
+            [-0.3795, -6.3157, -4.7475, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+        ]
+    )
 
     # # Matriz de entrada de disturbios
     # B1 = np.matrix(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
     B1 = A[:,:2]
 
     # Matriz de entradas de controle
-    # B2 = np.matrix([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
-    B2 = B
+    B2 = np.matrix([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
+    # B2 = B
 
     # Matriz de observacao y = [u, w]'
     C = np.matrix([
