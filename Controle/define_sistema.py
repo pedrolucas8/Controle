@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import root
-from structtype import structtype
+from .structtype import structtype
 
 
 def parametros_numericos():
@@ -195,47 +195,60 @@ def parametros_numericos():
             [0, 0],
         ]
     )
-    print(A)
-    print()
-    print(B)
+    # print(A)
+    # print()
+    # print(B)
     return A, B
 
 
 def def_sistema(sist):
     # Matriz de estados. x = [u, w, q, theta]'
-    A, B = parametros_numericos()
-    # A = np.matrix(
-    #     [
-    #         [-0.2655, -0.1235, 0.8388, -9.7925],
-    #         [-1.4412, -3.7332, 15.2192, 0.5863],
-    #         [-0.3795, -6.3157, -4.7475, 0.0],
-    #         [0.0, 0.0, 1.0, 0.0],
-    #     ]
-    # )
+    # A, B = parametros_numericos()
+    A = np.matrix(
+        [
+            [-0.2655, -0.1235, 0.8388, -9.7925],
+            [-1.4412, -3.7332, 15.2192, 0.5863],
+            [-0.3795, -6.3157, -4.7475, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+        ]
+    )
 
     # # Matriz de entrada de disturbios
-    B1 = np.matrix(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
+    # B1 = np.matrix(([-0.1235, 0.0], [-3.7332, -1.0], [-6.3157, 0.0], [0.0, 0.0]))
+    B1 = A[:,:2]
 
     # Matriz de entradas de controle
-    # B2 = np.matrix([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
-    B2 = B
+    B2 = np.matrix([[-0.6862, 0.0813], [-7.4350, 0.0], [-183.7447, 0.3455], [0.0, 0.0]])
+    # B2 = B
 
     # Matriz de observacao y = [u, w]'
-    C = np.matrix([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]])
+    C = np.matrix([
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0]
+    ])
 
     # Matriz de alimentação direta
     D = np.zeros((np.shape(C)[0], np.shape(B2)[1]))
 
     # Nome das variáveis
     estados = [
-        "Vel Horizontal (u)",
-        "Vel Vertical (w)",
-        "Taxa Arfagem (q)",
-        "Ang Atitude (theta)",
+        "Vel. Horizontal (u) [m/s]",
+        "Vel. Vertical (w) [m/s]",
+        "Taxa Arfagem (q) [rad/s]",
+        "Ang. Atitude (θ) [rad]",
     ]
-    controle = ["Def Profundor (eta)", "Tração (tau)"]
-    perturbacoes = ["Vel vertical (Ugust)", "Acel vertical (U'gust)"]
-    saidas = ["Vel Horizontal (u)", "Vel Vertical (w)"]
+    controle = [
+        "Def. Profundor (η) [rad]", 
+        "Tração (τ) [N]",
+    ]
+    perturbacoes = [
+        "Vel. vertical (Ugust) [m/s]",
+        "Acel. vertical (U'gust) [m/s]",
+    ]
+    saidas = [
+        "Vel. Horizontal (u) [m/s]",
+        "Vel. Vertical (w) [m/s]",
+    ]
 
     # Salva o resultado
     sist.sistema = structtype(
@@ -249,7 +262,3 @@ def def_sistema(sist):
         perturbacoes=perturbacoes,
         saidas=saidas,
     )
-
-
-if __name__ == "__main__":
-    parametros_numericos()

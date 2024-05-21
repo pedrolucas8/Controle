@@ -41,7 +41,8 @@ def seguidor_constante(A, B1, B2, C, D, K):
 
     Lambda = np.vstack((linha_cima, linha_baixo))
     RHS = np.vstack((np.zeros((nx, ny)), np.identity(ny)))
-    Nxu = np.linalg.solve(Lambda,RHS)
+    # Nxu = np.linalg.solve(Lambda,RHS)
+    Nxu = np.linalg.lstsq(Lambda,RHS,None)[0]
 
     Nx = Nxu[:nx,:]
     Nu = Nxu[-nu:,:]

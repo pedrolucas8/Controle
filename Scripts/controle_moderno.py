@@ -45,17 +45,19 @@ def controle_moderno(sist):
             1,  # penaliza theta
         ]
     )
-    R_LQ = np.array([1, 0.1])  # penaliza eta  # penaliza tau
+    R_LQ = np.array([
+        1, # penaliza eta 
+        0.1, # penaliza tau
+    ])
     sist.Controlador.LQR = structtype()
     sist.Controlador.LQR.P = controlador_lqr(
-        A, B2, B1, C, D, np.diag(Q_LQ), np.diag(R_LQ)
-    )
+        A, B1, B2, C, D, np.diag(Q_LQ), np.diag(R_LQ)
+    )    
 
     # ========== SÍNTESE DO OBSERVADOR ========== %
     sist.Observador = structtype()
     # ALOCAÇÃO DE POLOS
-    P = sist.Controlador.LQR.P.Polos
-    Po = 5 * sist.Controlador.LQR.P.Polos
+    Po = sist.Controlador.LQR.P.Polos - 2.3
     sist.Observador.Alocacao = structtype()
     sist.Observador.Alocacao.P = observador_alocacao_polos(Po, A, C)
 
