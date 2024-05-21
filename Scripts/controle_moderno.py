@@ -57,8 +57,7 @@ def controle_moderno(sist):
     # ========== SÍNTESE DO OBSERVADOR ========== %
     sist.Observador = structtype()
     # ALOCAÇÃO DE POLOS
-    P = sist.Controlador.LQR.P.Polos
-    Po = 5 * sist.Controlador.LQR.P.Polos
+    Po = sist.Controlador.LQR.P.Polos - 2.3
     sist.Observador.Alocacao = structtype()
     sist.Observador.Alocacao.P = observador_alocacao_polos(Po, A, C)
 

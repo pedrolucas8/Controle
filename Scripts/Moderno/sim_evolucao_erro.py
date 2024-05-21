@@ -9,7 +9,7 @@ from scipy.linalg import expm
 def sim_evolucao_erro(sistema, K, Ko, x0, e0):
 
     # === Configuração === #
-    T = 10
+    T = 20
 
     show_var = "estados"  # "saidas" / "estados" / "controles"
     estados = (
@@ -188,15 +188,24 @@ def e(sistema, K, Ko, x0, e0, dt, T):
             title="Tempo [s]",
             # range = [min(self.WSs), max(self.WSs)],
             # nticks = 50,
-            # showgrid = True,
-            # gridcolor = "lightgrey",
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         yaxis=dict(
             title="Erro das variávies de estado",
             # range = [min(self.PWs), max(self.PWs)],
             # dtick = 0,
             # tickrange = [0,1],
-            # gridcolor = "lightgrey"
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         showlegend=True,
         legend=dict(
@@ -239,15 +248,24 @@ def e(sistema, K, Ko, x0, e0, dt, T):
             title="Tempo [s]",
             # range = [min(self.WSs), max(self.WSs)],
             # nticks = 50,
-            # showgrid = True,
-            # gridcolor = "lightgrey",
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         yaxis=dict(
             title="Variávies de estado",
             # range = [min(self.PWs), max(self.PWs)],
             # dtick = 0,
             # tickrange = [0,1],
-            # gridcolor = "lightgrey"
+            showgrid=True,  # Show major gridlines
+            gridwidth=1,    # Major gridlines width
+            gridcolor='#CCCCCC',  # Color of major gridlines
+            minor_showgrid=True,  # Show minor gridlines
+            minor_gridwidth=0.5,  # Minor gridlines width
+            minor_gridcolor='#EAEAEA'  # Color of minor gridlines
         ),
         showlegend=True,
         legend=dict(
@@ -279,11 +297,12 @@ if __name__ == "__main__":
     from main import sist
 
     K = sist.Controlador.LQR.P.Ganhos
-    Ko = sist.Observador.LQR.P.Ganhos
+    Ko = sist.Observador.Alocacao.P.Ganhos
+    # Ko = sist.Observador.LQR.P.Ganhos
 
     x0 = [0, 0, 0.1, 10 / 57.3]
     e0 = 0.1 * np.ones(len(x0))
     fig, fig2, erro = e(sistema=sist.sistema, K=K, Ko=Ko, x0=x0, e0=e0, dt=0.001, T=5)
     fig.show()
-    fig.write_image("evolucao_erro_LQR.png", scale=2)
+    fig.write_image("evolucao_erro_Alocacao.png", scale=2)
     fig2.show()
