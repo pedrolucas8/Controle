@@ -1,5 +1,5 @@
-import numpy as np
-import control as ct
+from ..bibliotecas import *
+from ..structtype import structtype
 
 
 def funcao_transferencia():
@@ -28,7 +28,7 @@ def funcao_transferencia():
     TF3 = ct.TransferFunction(TF3_num, TF_den)
     TF4 = ct.TransferFunction(TF4_num, TF_den)
 
-    TFs = [TF1, TF2, TF3, TF4]
+    TFs = structtype(TF1=TF1, TF2=TF2, TF3=TF3, TF4=TF4)
 
     return TFs
 

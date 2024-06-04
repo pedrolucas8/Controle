@@ -16,7 +16,8 @@ malha_aberta(sist)
 
 controle_moderno(sist)
 
-fig = Plots.plot_polos(sist.sys_malha_aberta)
-fig.show()
-fig.write_image("fig_polos.png", scale=2)
+controle_classico(sist)
 
+# fig = Plots.plot_polos(sist.sys_malha_aberta)
+# fig.show()
+# fig.write_image("fig_polos.png", scale=2)
