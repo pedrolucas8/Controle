@@ -23,9 +23,10 @@ G = ctl.tf(numerador, denominador)
 # Critérios de desempenho
 # wn = 0.75 # ignd=True ; ig0=True ; Kp = [0.81348011], Ki = [0.41647733], Kd = [1.96811795]
 # wn = 2.00  # ignd=True ; ig0=False ; Kp = [-0.00227422], Ki = [-0.00297175], Kd = [0.00247413]
-wn = 1
+wn = 2. # True False - u prof
+# wn = 2.1
 
-ignora_zeros = True
+ignora_zeros = False
 ignora_nao_dominantes = True
 
 """
@@ -120,16 +121,32 @@ Gmf = Gf * Ts
 
 
 Tsim = 100
-T, yout = ctl.step_response(Gmf, Tsim)
 
 # Plotar a resposta
 plt.figure()
+T, yout = ctl.step_response(Gmf, Tsim)
 plt.plot(T, yout, 'k-', label="Resposta em Malha Fechada (otimizado)")
 plt.grid()
 T2 = np.linspace(-0.2, Tsim, 1000)
 degrau = np.ones_like(T2)
 degrau[T2 < 0] = 0
 plt.plot(T2, degrau, 'r-', label="Entrada: Degrau Unitário")
+plt.xlabel('Tempo (s)')
+plt.ylabel('Resposta')
+plt.legend()
+plt.show()
+
+# Plotar a resposta
+plt.figure()
+T, yout = ctl.step_response(Gmf, Tsim)
+plt.plot(T, yout, 'k-', label="Com pré-compensador")
+plt.grid()
+T, yout = ctl.step_response(Ts, Tsim)
+plt.plot(T, yout, 'k-', label="Sem pré-compensador")
+T2 = np.linspace(-0.2, Tsim, 1000)
+degrau = np.ones_like(T2)
+degrau[T2 < 0] = 0
+plt.plot(T2, degrau, 'r--', label="Entrada: Degrau Unitário")
 plt.xlabel('Tempo (s)')
 plt.ylabel('Resposta')
 plt.legend()
